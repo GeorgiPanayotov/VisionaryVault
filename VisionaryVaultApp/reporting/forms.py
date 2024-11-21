@@ -14,4 +14,3 @@ class ReportForm(forms.ModelForm):
             'placeholder': 'Provide a reason for reporting...',
             'rows': 4
         })
-
