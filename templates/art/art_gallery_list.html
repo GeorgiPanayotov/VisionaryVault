@@ -14,7 +14,7 @@
         {% if art_pieces %}
          <a href="{% url 'report' art_pieces.first.id %}" class="btn btn-danger report-btn">Report Art or Comment 🚩</a>
         {% else %}
-           <span class="text-danger">No art pieces available to report.</span>
+           <span class="btn btn-danger report-btn">No art pieces available to report.</span>
         {% endif %}
     </div>
 {% endif %}
