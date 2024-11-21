@@ -29,7 +29,7 @@
                     <!-- Display if Art Piece is Reported -->
                     {% if art_piece.status == 'reported' %}
                         {% if user.is_staff %}
-                            <p class="text-warning">This art piece has been reported.</p>
+                            <p class="reported-message text-warning">This art piece has been reported.</p>
                            <form method="POST" action="{% url 'admin_unreport' art_piece.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-warning">Reinstate to Active</button>

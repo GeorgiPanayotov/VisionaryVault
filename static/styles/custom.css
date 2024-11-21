@@ -134,3 +134,11 @@
 }
 
 
+/* Custom reinstate button for Staff */
+.reported-message {
+    font-size: 24px;         /* Adjust text size */
+    background-color: red;   /* Set red background */
+    color: white;            /* Set white text color for contrast */
+    padding: 10px;          /* Add padding around the text */
+    border-radius: 5px;     /* Optional: add rounded corners */
+}
