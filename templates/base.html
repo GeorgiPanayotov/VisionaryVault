@@ -10,25 +10,25 @@
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{% static 'styles/styles.css' %}"> 
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
 </head>
 <body class="{% block body_class %}homepage{% endblock %}"> <!-- Add a block to set the body class -->
 
 <header>
     <nav class="navbar navbar-expand-lg navbar-light">
     <div class="container-fluid">
-        
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        
+
         <div class="collapse navbar-collapse" id="navbarNav">
             <div class="d-flex justify-content-between w-100">
                 {% if user.is_authenticated %}
                     <div class="nav-item">
-                        <a href="{% url 'home' %}" class="navbar-brand">Visionary Vault</a>
+                        <a href="{% url 'art_gallery_list' %}" class="navbar-brand">Visionary Vault</a>
                     </div>
-                    
+
                     <div class="nav-item">
                         <a href="{% url 'my_art' %}" class="btn btn-primary mx-2">My Art</a>
                     </div>
@@ -102,10 +102,10 @@
         const popup = document.getElementById('popup-message');
         const messageText = document.getElementById('popup-message-text');
         messageText.textContent = message;
-        
+
         // Show the pop-up by adding the 'show' class
         popup.classList.add('show');
-        
+
         // Ensure the pop-up is visible (set display: block)
         popup.style.display = 'block';
 
@@ -123,6 +123,6 @@
             showPopupMessage("{{ message|escapejs }}");
         {% endfor %}
     {% endif %}
-</script>  
+</script>
 </body>
 </html>
