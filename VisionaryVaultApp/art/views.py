@@ -1,5 +1,8 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from .models import ArtPiece, Category
@@ -79,6 +82,7 @@ class ArtPieceUpdateView(UpdateView):
         return ArtPiece.objects.filter(user=self.request.user)
 
 
+@method_decorator(login_required, name='dispatch')
 class ArtPieceDeleteView(DeleteView):
     model = ArtPiece
     template_name = 'art/delete_art_piece.html'
@@ -86,6 +90,10 @@ class ArtPieceDeleteView(DeleteView):
 
     def get_queryset(self):
         return ArtPiece.objects.filter(user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Art piece deleted successfully.")
+        return super().delete(request, *args, **kwargs)
 
 
 class CategoryListView(ListView):

@@ -67,7 +67,7 @@ class UserRegistrationForm(UserCreationForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username']  # Only allow username and email to be updated
+        fields = ['username']  # Only allow username to be updated
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

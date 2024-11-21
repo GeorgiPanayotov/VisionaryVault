@@ -1,5 +1,4 @@
 from decimal import Decimal
-
 from django.core.validators import FileExtensionValidator, MinValueValidator
 from django.db import models
 from .user_related_model import UserRelatedModel
