@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}Report Artwork or Comment - Visionary Vault{% endblock %}
+
+{% block content %}
+<h2>Report Artwork or Comment</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Render the form with CSRF token -->
+    <button type="submit" class="btn btn-danger">Submit Report</button>
+</form>
+{% endblock %}

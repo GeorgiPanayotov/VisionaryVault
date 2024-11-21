@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Reinstate Art Piece - Visionary Vault{% endblock %}
+
+{% block content %}
+<h2>Reinstate Art Piece</h2>
+
+<p>Are you sure you want to reinstate this art piece and remove the "reported" status?</p>
+
+<div class="card">
+    <img src="{{ art_piece.art_image.url }}" class="card-img-top" alt="Art Piece">
+    <div class="card-body">
+        <h5 class="card-title">{{ art_piece.description|default:"No Description" }}</h5>
+        <p>Status: {{ art_piece.status }}</p>
+    </div>
+</div>
+
+<!-- Confirmation Form -->
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Reinstate Art Piece</button>
+</form>
+
+<a href="{% url 'art_gallery_list' %}" class="btn btn-secondary mt-2">Cancel</a>
+
+{% endblock %}

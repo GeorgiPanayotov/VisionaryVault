@@ -1,0 +1,54 @@
+/* buttons.css */
+.btn {
+    background-color: #4caf86; /* Green color for buttons */
+    color: white; /* White text */
+    font-size: 18px; /* Larger font size */
+    font-weight: bold; /* Bold text */
+    padding: 15px 30px; /* Larger button size */
+    text-align: center;
+    border-radius: 8px; /* Rounded corners */
+    border: none; /* Remove border */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #4a2bb5; /* Lighter shade on hover */
+}
+
+.like-btn {
+    position: relative;
+    padding: 5px 10px;
+    font-size: 12px;
+    width: 30%;
+    height: 50px;
+    border-radius: 5px;
+    justify-content: center;
+}
+
+.button-container {
+    display: flex; /* Flexbox layout */
+    gap: 10px; /* Space between buttons */
+    justify-content: flex-start; /* Align buttons to the left */
+    margin-top: 10px; /* Add spacing above */
+}
+
+/* Position the Report Art Piece button at the bottom */
+.report-btn {
+    position: sticky;
+    bottom: 1px; /* Adjust the distance from the bottom */
+    margin-left: 530px;
+    right: 30px;
+}
+
+.continue-btn {
+    left: 30px;
+    margin-right: 530px;
+}
+
+.register-btn {
+    right: 30px;
+    margin-left: 530px;
+}
+
+/* Optional: Add some spacing to the Upload button */

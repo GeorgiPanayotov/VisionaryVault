@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+
+{% block title %}Art Gallery{% endblock %}
+
+{% block content %}
+<h1 class="text-center">Art Gallery</h1>
+
+{% if user.is_authenticated %}
+    <div class="d-flex justify-content-between mb-4">
+        <!-- Upload Art Button on the left -->
+        <a href="{% url 'upload_art' %}" class="btn btn-success">Upload Art Piece</a>
+
+        <!-- Report Art Button on the right -->
+        {% if art_pieces %}
+         <a href="{% url 'report' art_pieces.first.id %}" class="btn btn-danger report-btn">Report Art or Comment 🚩</a>
+        {% else %}
+           <span class="text-danger">No art pieces available to report.</span>
+        {% endif %}
+    </div>
+{% endif %}
+
+<div class="art-gallery-container">
+    {% for art_piece in art_pieces %}
+        <div class="art-piece-card mb-4">
+            <div class="card" style="width: 100%;">
+            <img src="{{ art_piece.art_image.url }}" class="card-img-top" alt="Art Piece">
+                 <div class="card-body">
+                    <h5 class="card-title">{{ art_piece.description|default:"No Description" }}</h5>
+                    <!-- Display if Art Piece is Reported -->
+                    {% if art_piece.status == 'reported' %}
+                        {% if user.is_staff %}
+                            <p class="text-warning">This art piece has been reported.</p>
+                           <form method="POST" action="{% url 'admin_unreport' art_piece.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-warning">Reinstate to Active</button>
+                           </form>
+                        {% endif %}
+                    {% endif %}
+                    <div class="info-bar d-flex align-items-center justify-content-around py-2 px-3 rounded shadow-sm">
+                     <!-- Likes -->
+                               <div class="info-item d-flex align-items-center">
+                                   <i class="bi bi-heart-fill text-danger me-1"></i> <!-- Bootstrap Icon -->
+                                   <p class="mb-0"><strong>Likes:</strong> <span id="like-count-{{ art_piece.id }}">{{ art_piece.likes_count }}</span></p>
+                               </div>
+                               <div class="info-item d-flex align-items-center">
+                                   <i class="bi bi-person-fill text-primary me-1"></i> <!-- Bootstrap Icon -->
+                                   <p class="mb-0"><strong>Author:</strong> {{ art_piece.user }}</p>
+                               </div>
+
+                               <div class="info-item d-flex align-items-center">
+                                   <i class="bi bi-currency-dollar text-success me-1"></i> <!-- Bootstrap Icon -->
+                                   <p class="mb-0"><strong>Price:</strong> ${{ art_piece.price }}</p>
+                               </div>
+                      </div>
+                    {% if user.is_authenticated %}
+                    <div class="d-flex justify-content-between mb-3">
+                              <button id="like-btn-{{ art_piece.id }}" class="btn btn-primary like-btn" 
+                                onclick="likeArtPiece({{ art_piece.id }})">
+                                {% if user in art_piece.liked_users.all %}
+                                   Unlike
+                                {% else %}
+                                   Like ❤️
+                                {% endif %}
+                            </button>
+                            <form method="POST" action="{% url 'add_to_basket' art_piece.id %} ">
+                               {% csrf_token %}
+                                <button type="submit" class="btn btn-primary" >BUY</button>
+                            </form>
+                    </div>
+                         <!-- Add Comment Form -->
+                         <form id="comment-form-{{ art_piece.id }}" method="POST" action="{% url 'comment_add_and_list' art_piece.id %}">
+                            {% csrf_token %}
+                            <textarea class="form-control mb-2" name="content" id="comment-content-{{ art_piece.id }}" rows="2" placeholder="Add a comment..."></textarea>
+                            <button type="submit" class="btn btn-secondary btn-success">Post Comment 💬</button>
+                        </form>
+                    {% endif %}
+                </div>     
+                <div class="card-footer">
+                 {% if art_piece.comment_set.all %}
+                    <h6>Comments:</h6>
+                    <ul class="list-unstyled" id="comments-list-{{ art_piece.id }} ">
+                        {% for comment in art_piece.comment_set.all %}
+                            <li id="comment-{{ comment.id }}" class="mb-3 p-3 bg-light rounded shadow-sm">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="comment-user text-primary fw-bold">{{ comment.user.username }}:  </span>
+                                <div class="comment-content text-dark">
+                                      
+                                      {{ comment.content }}
+                                 </div>
+                                 <div>
+                                       
+                                       <span class="text-muted small"> {{ comment.timestamp|date:"m/d/Y g:i a" }}</span>
+                                </div>
+                                   {% if comment.user == user %}
+                                  <a href="#comment-actions-{{ comment.id }}" class="btn btn-link btn-sm" data-bs-toggle="collapse">...</a>
+                                  <div id="comment-actions-{{ comment.id }}" class="collapse">
+                                        <!-- Delete Form -->
+                                        <form method="POST" action="{% url 'edit_delete_comment' art_piece.id comment.id %}" class="delete-comment-form" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="method" value="DELETE">
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                        <!-- Edit Button -->
+                                        <button class="btn btn-warning edit-comment" data-id="{{ comment.id }}" data-content="{{ comment.content }}">Edit</button>
+                                    <!-- Edit Form (initially hidden) -->
+                                    <form method="POST" action="{% url 'edit_delete_comment' art_piece.id comment.id %}" class="edit-comment-form" style="display:none;">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="method" value="EDIT">
+                                        <textarea name="content" class="form-control">{{ comment.content }}</textarea>
+                                        <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                        <button type="button" class="btn btn-secondary btn-sm cancel-edit">Cancel</button>
+                                    </form>
+                                  </div>
+                                    
+                                {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+<button onclick="window.scrollTo(0, 0);" class="btn btn-primary" style="position: fixed; bottom: 60px; right: 10px; display: none;" id="scrollToTopBtn">Return to the top ⏫</button>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('[id^=comment-form-]').submit(async function(e) {
+        e.preventDefault();
+        const form = $(this);
+        const artPieceId = form.attr('id').split('-')[2];
+        const content = form.find('textarea[name="content"]').val();
+        
+        // Grab CSRF token from the form
+        const csrfToken = form.find('input[name="csrfmiddlewaretoken"]').val();
+
+        try {
+            const response = await fetch(form.attr('action'), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken  // Pass CSRF token in the headers
+                },
+                body: JSON.stringify({
+                    content: content,
+                    art_piece: artPieceId
+                })
+            });
+
+            if (response.status !== 201) {
+                const errorText = await response.text();
+                console.error('Error occurred:', errorText);
+                alert('Failed to submit comment. Server responded with: ' + errorText);
+                throw new Error('Failed to submit comment');
+            }
+
+            const result = await response.json();
+            console.log('Server Response:', result);
+
+            if (!result || !result.content) {
+                console.error('Invalid response from server:', result);
+                throw new Error('Invalid response');
+            }
+
+            // Append the new comment to the list
+            const newCommentHtml = `
+                <li id="comment-${result.id}">
+                    <p>${result.content}</p>
+                    <span class="timestamp">${result.timestamp}</span>
+                    <span class="status">${result.status}</span>
+                </li>
+            `;
+            $(`#comments-list-${artPieceId}`).append(newCommentHtml);
+
+            form.find('textarea').val('');  // Clear the textarea
+            
+            window.location.href = "{% url 'art_gallery_list' %}";
+
+        } catch (error) {
+            console.error('Error occurred:', error);
+            alert('Could not submit comment. Try again later.');
+        }
+    });
+});
+
+    // Toggle edit form
+    $('.edit-comment').click(function() {
+        const commentId = $(this).data('id');
+        const commentContent = $(this).data('content');
+        
+        $(`#comment-${commentId} .comment-content`).hide();
+        $(`#comment-${commentId} .edit-comment-form textarea`).val(commentContent);
+        $(`#comment-${commentId} .edit-comment-form`).show();
+    });
+
+    // Cancel edit
+    $('.cancel-edit').click(function() {
+        const commentId = $(this).closest('li').attr('id').split('-')[1];
+        $(`#comment-${commentId} .comment-content`).show();
+        $(`#comment-${commentId} .edit-comment-form`).hide();
+    });
+
+   $('.edit-comment-form').submit(async function(e) {
+    e.preventDefault();
+    const form = $(this);
+    const commentId = form.closest('li').attr('id').split('-')[1];
+    const artPieceId = form.closest('ul').attr('id').split('-')[2];
+    const content = form.find('textarea[name="content"]').val();
+
+    // Create FormData to send the form data with the method and content
+    const formData = new FormData();
+    formData.append('method', 'EDIT'); // Add the method field to signal it's an edit
+    formData.append('content', content); // Add the content to be updated
+
+    try {
+        const response = await fetch(form.attr('action'), {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}' // Include CSRF token for security
+            }
+        });
+
+        if (!response.ok) throw new Error(response.statusText);
+        const result = await response.json();
+
+        // Update the comment content and hide the edit form
+        $(`#comment-${commentId} .comment-content`).text(result.content).show();
+        form.hide();
+        
+        window.location.href = "{% url 'art_gallery_list' %}";
+
+    } catch (error) {
+    console.error('Error occurred:', error);  // Log the full error message
+    alert('Could not update comment. Try again later.');
+}
+});
+   
+   function likeArtPiece(artPieceId) {
+    fetch(`/art/${artPieceId}/like/`, {  // Update the URL to match the API route
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the like count dynamically
+            document.querySelector(`#like-count-${artPieceId}`).textContent = data.like_count;
+            
+            // Toggle the button text and functionality
+            const likeButton = document.querySelector(`#like-btn-${artPieceId}`);
+            if (data.action === 'liked') {
+                likeButton.textContent = "Unlike";
+                likeButton.setAttribute('onclick', `unlikeArtPiece(${artPieceId})`);
+            } else {
+                likeButton.textContent = "Like";
+                likeButton.setAttribute('onclick', `likeArtPiece(${artPieceId})`);
+            }
+        } else {
+            alert(data.message); // Optionally display a message
+        }
+    });
+}
+
+function unlikeArtPiece(artPieceId) {
+    fetch(`/art/${artPieceId}/like/`, {  // Same endpoint for unlike action
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the like count dynamically
+            document.querySelector(`#like-count-${artPieceId}`).textContent = data.like_count;
+            
+            // Change the button back to "Like"
+            const likeButton = document.querySelector(`#like-btn-${artPieceId}`);
+            likeButton.textContent = "Like";
+            likeButton.setAttribute('onclick', `likeArtPiece(${artPieceId})`);
+        } else {
+            alert(data.message); // Optionally display a message
+        }
+    });
+}
+
+function getCookie(name) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring(name.length + 1);
+        }
+    }
+    return '';
+}
+
+window.onscroll = function() {
+    const btn = document.getElementById('scrollToTopBtn');
+    if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+        btn.style.display = 'block';
+    } else {
+        btn.style.display = 'none';
+    }
+};
+</script>
+
+{% endblock %}

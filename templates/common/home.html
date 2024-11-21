@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to Visionary Vault{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+
+{% if user.is_authenticated %}
+    <h2>Welcome to Visionary Vault, {{ user.username }}!</h2>
+    <p>Explore various artworks from our talented community of artists.</p>
+    <p>Thank you for being a valued member!</p>
+    <a href="{% url 'art_gallery_list' %}" class="btn btn-primary">View Art Gallery</a>
+{% else %}
+      <h2>Welcome to Visionary Vault!</h2>
+    <p>Looks like you are either not part of our talented community or you're not logged in.</p>
+    <!-- Content for unauthenticated users -->
+    <p>Please <strong>log in</strong> or <strong>register</strong> to explore our full collection by clicking on the buttons above.</p>
+
+{% endif %}
+{% endblock %}

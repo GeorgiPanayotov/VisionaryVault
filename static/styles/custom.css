@@ -1,0 +1,136 @@
+/* Base styles for the profile details page */
+#profile-details {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: rgba(91, 184, 129, 0);
+    min-height: 100vh; /* Optional: Ensures the background covers the full viewport */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgb(14, 87, 104);
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 30px;
+}
+
+.profile-image {
+    flex-shrink: 0;
+    margin-right: 40px;
+}
+
+.profile-img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ddd;
+}
+
+.profile-details {
+    flex-grow: 1;
+}
+
+.profile-name {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.profile-age,
+.profile-bio,
+.profile-phone,
+.profile-address {
+    font-size: 1.1rem;
+    color: #0e5768;
+    margin: 8px 0;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+}
+
+.btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    color: #fff;
+    text-align: center;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+    border: none;
+}
+
+.btn-edit:hover {
+    background-color: #45a049;
+}
+
+.btn-delete {
+    background-color: #f44336;
+    border: none;
+}
+
+.btn-delete:hover {
+    background-color: #da190b;
+}
+
+@media (max-width: 768px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-image {
+        margin-bottom: 20px;
+    }
+
+    .profile-details {
+        text-align: center;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+.comment-content {
+        max-height: 100px; /* Set the desired max height */
+        overflow-y: auto; /* Enables vertical scrolling */
+    }
+
+.art-piece-card {
+        max-width: 800px; /* You may change this size based on your layout */
+}
+
+.art-piece-card .card-title,
+.art-piece-card .card-body {
+    color: #333; /* Dark text for better visibility */
+}
+
+

@@ -1,0 +1,17 @@
+{% extends "base.html" %}  <!-- Adjust this to your base template -->
+
+{% block content %}
+  <h2>Change Email Address</h2>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Email</button>
+  </form>
+
+  <div>
+    <a href="{% url 'change_password' %}">Change Password</a> | 
+    <a href="{% url 'profile_details' %}">Back to Profile</a>
+  </div>
+
+{% endblock %}

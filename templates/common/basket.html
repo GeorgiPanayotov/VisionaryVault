@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Basket{% endblock %}
+
+{% block content %}
+<h1>Your Basket</h1>
+
+{% if basket and basket.items.exists %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Art Piece</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in basket.items.all %}
+                <tr>
+                    <td>{{ item.art_piece.description }}</td>
+                    <td>${{ item.art_piece.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>
+                        <form method="POST" action="{% url 'remove_from_basket' item.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+             <table class="table">
+                 <thead>
+                 <tr>
+                     Total price:
+                 </tr>
+                 </thead>
+                 <tr>
+                     <td>${{ total_price }}</td>
+                 </tr>
+             </table>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between mb-3" >
+         <a href="{% url 'art_gallery_list' %}" class="btn btn-primary continue-btn">⬅️ Continue shopping</a>
+         <a href="{% url 'checkout' %}" class="btn btn-success">Proceed to Checkout ➡️</a>
+    </div>
+{% else %}
+    <p>Your basket is empty. Look at the masterpieces available</p>
+    <a href="{% url 'art_gallery_list' %}" class="btn btn-success">Proceed to Main Gallery</a>
+{% endif %}
+{% endblock %}

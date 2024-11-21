@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Art Gallery{% endblock %}
+
+{% block content %}
+<h2>Your Uploaded Artworks</h2>
+{% if art_pieces %}
+    <ul class="list-group">
+        {% for art in art_pieces %}
+            <li class="list-group-item">
+                <img src="{{ art.art_image.url }}" alt="Art" class="img-thumbnail" style="max-width: 100px;">
+                <strong>{{ art.description }}
+                
+                </strong>
+
+                <!-- View Button -->
+                <a href="{% url 'art_piece_detail' art.id %}" class="btn btn-info btn-sm">Expand 🔍</a>
+
+                <!-- Edit Button -->
+                <a href="{% url 'edit_art_piece' art.id %}" class="btn btn-warning btn-sm">Edit</a>
+
+                <!-- Delete Button -->
+                <a href="{% url 'delete_art_piece' art.id %}" class="btn btn-danger btn-sm">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>You have not uploaded any artworks yet. Go ahead and add your first masterpiece!</p>
+    <a href="{% url 'upload_art' %}" class="btn btn-primary">Create Your First Art Piece</a>
+{% endif %}
+{% endblock %}

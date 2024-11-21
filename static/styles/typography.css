@@ -1,0 +1,15 @@
+/* typography.css */
+footer {
+    position: sticky; /* Ensure it stays at the bottom */
+    bottom: 0;
+    padding: 10px 0;
+    width: 100%;
+    text-align: center;
+    color: #0e5768; /* White text for contrast */
+    font-size: 18px; /* Adjust font size */
+}
+
+header {
+    border-bottom: none; /* Remove any borders */
+    padding: 0; /* Adjust padding if needed */
+}

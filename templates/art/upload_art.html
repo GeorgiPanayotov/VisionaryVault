@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Upload Art Piece</h1>
+    
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }} 
+    
+    <button type="submit">Upload Art Piece</button>
+</form>
+
+<div class="art-gallery">
+    {% for art_piece in art_pieces %}
+        <div class="art-piece">
+            <img src="{{ art_piece.art_image.url }}" alt="{{ art_piece.title }}">
+            <h3>{{ art_piece.title }}</h3>
+            <p>{{ art_piece.description }}</p>
+            <p><strong>By: {{ art_piece.user.username }}</strong></p>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

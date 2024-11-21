@@ -1,0 +1,35 @@
+<!-- accounts/templates/accounts/profile_details.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="profile-details">
+    <div class="container">
+        <h1> Profile Details </h1>
+        <div class="profile-info">
+            <div class="profile-header">
+                <div class="profile-image">
+                    {% if profile.profile_picture %}
+                        <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="profile-img" />
+                    {% else %}
+                        <img src="{% static 'images/default-profile.png' %}" alt="Default Profile Picture" class="profile-img" />
+                    {% endif %}
+                </div>
+                <div class="profile-details">
+                    <h2 class="profile-name">{{ profile.full_name }}</h2>
+                    <p class="profile-age"> <strong>Age: {{ profile.age|default:"N/A" }}</strong></p>
+                    <p class="profile-bio"><strong>Bio: {{ profile.bio|default:"No bio provided." }}</strong></p>
+                    <p class="profile-phone"><strong>Phone number: {{ profile.phone_number|default:"No phone number provided."}}</strong></p>
+                    <p class="profile-address"><strong>Address: {{ profile.address|default:"No address is provided."}}</strong></p>
+                </div>
+            </div>
+            <div class="action-buttons">
+                <a href="{% url 'edit_profile' %}" class="btn btn-warning">Edit Profile</a>
+                <a href="{% url 'delete_profile' %}" class="btn btn-danger">Delete Profile</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<h1>Checkout</h1>
+
+{% if basket and basket.items.exists %}
+    <p>Please review your details and confirm your purchase:</p>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Order Summary</h5>
+            <ul class="list-group mb-3">
+                {% for item in basket.items.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.art_piece.description }}
+                        <span>   {{ item.art_piece.price|floatformat:2|add:item.quantity|floatformat:2 }}</span>
+                    </li>
+                {% endfor %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <strong>Total:</strong>
+                    <strong>${{ total_price }}</strong>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <p> Please add additional contact information below</p>
+
+<form method="POST" action="#">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="name" class="form-label">Full Name</label>
+        <input 
+            type="text" 
+            name="name" 
+            id="name" 
+            class="form-control" 
+            value="{{ profile_name }}" 
+            required
+            readonly
+        >
+        <input type="hidden" name="original_name" value="{{ profile_name }}">
+    </div>
+
+    <div class="mb-3">
+        <label for="address" class="form-label">Shipping Address 🏡</label>
+        <textarea 
+            name="address" 
+            id="address" 
+            class="form-control" 
+            rows="3" 
+            required
+        >{{ profile_address }}</textarea>
+        {% if not profile_address %}
+            <div class="text-danger">Please enter your shipping address.</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="phone_number" class="form-label">Phone Number 📞</label>
+        <input 
+            type="text" 
+            name="phone_number" 
+            id="phone_number" 
+            class="form-control" 
+            value="{{ profile_phone }}" 
+            required 
+        >
+        {% if not profile_phone %}
+            <div class="text-danger">Please enter your phone number.</div>
+        {% endif %}
+    </div>
+
+    <div class="mb-3">
+        <label for="payment" class="form-label">Payment Method</label>
+        <select name="payment_method" id="payment" class="form-select" required>
+            <option value="" disabled selected>Select a payment method</option>
+            <option value="credit_card">Credit Card</option>
+            <option value="paypal">PayPal</option>
+            <option value="bank_transfer">Bank Transfer</option>
+        </select>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{% url 'view_basket' %}" class="btn btn-secondary">⬅️ Go Back</a>
+        <button type="submit" class="btn btn-success">Confirm & Pay ➡️</button>
+    </div>
+</form>
+{% else %}
+    <p>Your basket is empty. Add some art pieces before checking out!</p>
+    <a href="{% url 'art_gallery_list' %}" class="btn btn-primary">⬅️ Back to Gallery</a>
+{% endif %}
+{% endblock %}
