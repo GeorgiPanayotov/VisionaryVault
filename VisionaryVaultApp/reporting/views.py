@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Report
 from .forms import ReportForm
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 
 from ..art.models import ArtPiece, Comment
 
@@ -44,4 +44,3 @@ def reinstate_art_piece(request, art_piece_id):
 
     # Redirect to the art gallery or any other appropriate page
     return redirect('art_gallery_list')
-

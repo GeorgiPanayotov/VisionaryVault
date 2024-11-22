@@ -147,6 +147,14 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGIN_URL = 'login'
 
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # For example, smtp.gmail.com for Gmail
+EMAIL_PORT = 587  # Or another port depending on your email service
+EMAIL_HOST_USER = 'georgipanayotov1995@gmail.com'
+EMAIL_HOST_PASSWORD = 'pnzf lihl vkbd jost' # Replace this with the App Password
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'noreply@visionaryvault.com'  # The email that will appear as the sender
 
 AUTHENTICATION_BACKENDS = (
     'VisionaryVaultApp.accounts.authentication.EmailOrUsernameBackend',

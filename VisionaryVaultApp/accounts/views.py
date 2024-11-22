@@ -1,12 +1,13 @@
-from django.contrib.auth import logout, authenticate, login, get_user_model
-from django.contrib.auth.views import LoginView, PasswordChangeDoneView, PasswordChangeView
+from django.contrib.auth import logout, authenticate, login, get_user_model, views as auth_views
+from django.contrib.auth.views import LoginView, PasswordChangeDoneView, PasswordChangeView, PasswordResetView
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views import View
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.generic import UpdateView, TemplateView
-from .forms import UserRegistrationForm, UserUpdateForm, CustomLoginForm, EmailChangeForm, ProfileUpdateForm
+from .forms import UserRegistrationForm, UserUpdateForm, CustomLoginForm, EmailChangeForm, ProfileUpdateForm, \
+    CustomPasswordResetForm
 from .models import Profile
 
 
@@ -142,3 +143,31 @@ class EmailChangeDoneView(TemplateView):
         context['message'] = "Your email address was updated successfully!"
         return context
 
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'accounts/password_change/password_reset_form.html'
+    success_url = '/accounts/password_reset/done/'  # Change as needed
+
+    def form_valid(self, form):
+        # Call the parent form_valid method
+        response = super().form_valid(form)
+        # If the user exists (the email is valid), show a success message
+        messages.success(self.request, "If an account with that email exists, a password reset email has been sent.")
+        return response
+
+    def form_invalid(self, form):
+        # Optionally process form errors here
+        return super().form_invalid(form)
+
+
+class CustomPasswordResetDoneView(auth_views.PasswordResetDoneView):
+    template_name = 'accounts/password_change/password_reset_done.html'
+
+
+class CustomPasswordResetConfirmView(auth_views.PasswordResetConfirmView):
+    template_name = 'accounts/password_change/password_reset_confirm.html'
+
+
+class CustomPasswordResetCompleteView(auth_views.PasswordResetCompleteView):
+    template_name = 'accounts/password_change/password_reset_complete.html'

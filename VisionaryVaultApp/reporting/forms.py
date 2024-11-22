@@ -1,5 +1,5 @@
 from django import forms
-from .models import Report, ArtPiece, Comment
+from .models import Report
 
 
 class ReportForm(forms.ModelForm):

@@ -29,7 +29,7 @@
                     <!-- Display if Art Piece is Reported -->
                     {% if art_piece.status == 'reported' %}
                         {% if user.is_staff %}
-                            <p class="reported-message text-warning">This art piece has been reported.</p>
+                            <p class="text-warning">This art piece has been reported.</p>
                            <form method="POST" action="{% url 'admin_unreport' art_piece.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-warning">Reinstate to Active</button>
@@ -54,7 +54,7 @@
                       </div>
                     {% if user.is_authenticated %}
                     <div class="d-flex justify-content-between mb-3">
-                              <button id="like-btn-{{ art_piece.id }}" class="btn btn-primary like-btn" 
+                              <button id="like-btn-{{ art_piece.id }}" class="btn btn-primary like-btn"
                                 onclick="likeArtPiece({{ art_piece.id }})">
                                 {% if user in art_piece.liked_users.all %}
                                    Unlike
@@ -74,7 +74,7 @@
                             <button type="submit" class="btn btn-secondary btn-success">Post Comment 💬</button>
                         </form>
                     {% endif %}
-                </div>     
+                </div>
                 <div class="card-footer">
                  {% if art_piece.comment_set.all %}
                     <h6>Comments:</h6>
@@ -84,11 +84,11 @@
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                 <span class="comment-user text-primary fw-bold">{{ comment.user.username }}:  </span>
                                 <div class="comment-content text-dark">
-                                      
+
                                       {{ comment.content }}
                                  </div>
                                  <div>
-                                       
+
                                        <span class="text-muted small"> {{ comment.timestamp|date:"m/d/Y g:i a" }}</span>
                                 </div>
                                    {% if comment.user == user %}
@@ -111,7 +111,7 @@
                                         <button type="button" class="btn btn-secondary btn-sm cancel-edit">Cancel</button>
                                     </form>
                                   </div>
-                                    
+
                                 {% endif %}
                                 </div>
                             </li>
@@ -134,7 +134,7 @@ $(document).ready(function() {
         const form = $(this);
         const artPieceId = form.attr('id').split('-')[2];
         const content = form.find('textarea[name="content"]').val();
-        
+
         // Grab CSRF token from the form
         const csrfToken = form.find('input[name="csrfmiddlewaretoken"]').val();
 
@@ -177,7 +177,7 @@ $(document).ready(function() {
             $(`#comments-list-${artPieceId}`).append(newCommentHtml);
 
             form.find('textarea').val('');  // Clear the textarea
-            
+
             window.location.href = "{% url 'art_gallery_list' %}";
 
         } catch (error) {
@@ -191,7 +191,7 @@ $(document).ready(function() {
     $('.edit-comment').click(function() {
         const commentId = $(this).data('id');
         const commentContent = $(this).data('content');
-        
+
         $(`#comment-${commentId} .comment-content`).hide();
         $(`#comment-${commentId} .edit-comment-form textarea`).val(commentContent);
         $(`#comment-${commentId} .edit-comment-form`).show();
@@ -231,7 +231,7 @@ $(document).ready(function() {
         // Update the comment content and hide the edit form
         $(`#comment-${commentId} .comment-content`).text(result.content).show();
         form.hide();
-        
+
         window.location.href = "{% url 'art_gallery_list' %}";
 
     } catch (error) {
@@ -239,7 +239,7 @@ $(document).ready(function() {
     alert('Could not update comment. Try again later.');
 }
 });
-   
+
    function likeArtPiece(artPieceId) {
     fetch(`/art/${artPieceId}/like/`, {  // Update the URL to match the API route
         method: 'POST',
@@ -253,7 +253,7 @@ $(document).ready(function() {
         if (data.success) {
             // Update the like count dynamically
             document.querySelector(`#like-count-${artPieceId}`).textContent = data.like_count;
-            
+
             // Toggle the button text and functionality
             const likeButton = document.querySelector(`#like-btn-${artPieceId}`);
             if (data.action === 'liked') {
@@ -282,7 +282,7 @@ function unlikeArtPiece(artPieceId) {
         if (data.success) {
             // Update the like count dynamically
             document.querySelector(`#like-count-${artPieceId}`).textContent = data.like_count;
-            
+
             // Change the button back to "Like"
             const likeButton = document.querySelector(`#like-btn-${artPieceId}`);
             likeButton.textContent = "Like";
