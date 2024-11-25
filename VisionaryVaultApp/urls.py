@@ -24,8 +24,8 @@ from VisionaryVaultApp.common.views import HomePageView
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),  # Admin dashboard
-    path('', HomePageView.as_view(), name='home'),  # Homepage
+    path('admin/', admin.site.urls),
+    path('', HomePageView.as_view(), name='home'),
     path('accounts/', include('VisionaryVaultApp.accounts.urls')),
     path('art/', include('VisionaryVaultApp.art.urls')),
     path('art/<int:art_piece_id>/comments/', CommentListCreateView.as_view(), name='comment_add_and_list'),

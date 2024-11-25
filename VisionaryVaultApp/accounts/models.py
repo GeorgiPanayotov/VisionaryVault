@@ -1,5 +1,6 @@
 from datetime import date
 
+from cloudinary.models import CloudinaryField
 from django.core.validators import RegexValidator
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -43,8 +44,7 @@ class Profile(models.Model):
 
     date_of_birth = models.DateField(blank=True, null=True)
 
-    profile_picture = models.ImageField(
-        upload_to='profile_pics/',
+    profile_picture = CloudinaryField(
         null=True,
         blank=True,
         verbose_name='Profile Picture',

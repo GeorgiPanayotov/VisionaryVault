@@ -10,14 +10,31 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import cloudinary_storage
+import cloudinary
+import environ
 from pathlib import Path
 from django.urls import reverse_lazy
 
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+env = environ.Env()
+
+env.read_env(os.path.join(BASE_DIR, '.env'))
+
+cloudinary.config(
+    cloud_name=env('CLOUD_NAME'),
+    api_key=env('API_KEY'),
+    api_secret=env('API_SECRET')
+)
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('API_KEY'),
+    'API_SECRET': env('API_SECRET'),
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -37,12 +54,15 @@ REST_FRAMEWORK = {
     ],
 }
 
+
 MY_APPS = [
     'VisionaryVaultApp.accounts',
     'VisionaryVaultApp.art',
     'VisionaryVaultApp.reporting',
     'VisionaryVaultApp.common',
     'rest_framework',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 INSTALLED_APPS = [

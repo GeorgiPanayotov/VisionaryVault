@@ -1,4 +1,6 @@
 from decimal import Decimal
+
+from cloudinary.models import CloudinaryField
 from django.core.validators import FileExtensionValidator, MinValueValidator
 from django.db import models
 from .user_related_model import UserRelatedModel
@@ -8,7 +10,7 @@ from VisionaryVaultApp.art.validators import FileSizeValidator
 
 class ArtPiece(UserRelatedModel, TimestampStatusModel):
 
-    art_image = models.ImageField(
+    art_image = CloudinaryField(
         verbose_name='Art Picture',
         validators=[
             FileExtensionValidator(['png', 'jpg', 'jpeg']),
