@@ -6,8 +6,48 @@
 <h2>Report Artwork or Comment</h2>
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}  <!-- Render the form with CSRF token -->
+    <div>
+        {{ form.art_piece.label }}
+        {{ form.art_piece }}
+    </div>
+    <div>
+        {{ form.comment.label }}
+        {{ form.comment }} <!-- This will initially be empty -->
+    </div>
+    <div>
+        {{ form.reason.label }}
+        {{ form.reason }}
+    </div>  <!-- Render the form with CSRF token -->
     <button type="submit" class="btn btn-danger">Submit Report</button>
 </form>
 {% endblock %}
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const artPieceSelect = document.getElementById('id_art_piece');
+        const commentSelect = document.getElementById('id_comment');
+
+        artPieceSelect.addEventListener('change', function() {
+            const artPieceId = this.value;
+            const url = new URL(window.location.href);
+            url.searchParams.set('art_piece', artPieceId);
+
+            // Fetch comments based on the selected art piece
+            fetch(url)
+                .then(response => response.json())  // Expecting a JSON response
+                .then(data => {
+                    // Clear the comment select element
+                    commentSelect.innerHTML = '';
+
+                    // Populate comment drop-down with new options
+                    data.comments.forEach(comment => {
+                        const option = document.createElement('option');
+                        option.value = comment.id;  // Assign ID to value
+                        option.textContent = comment.text; // Set the text for the option
+                        commentSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching comments:', error));
+        });
+    });
+</script>

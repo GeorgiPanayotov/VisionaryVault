@@ -9,11 +9,14 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
+import requests
 import os
 import cloudinary_storage
 import cloudinary
 import environ
 from pathlib import Path
+
+from django.contrib.sites import requests
 from django.urls import reverse_lazy
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -174,7 +177,7 @@ EMAIL_PORT = 587  # Or another port depending on your email service
 EMAIL_HOST_USER = 'georgipanayotov1995@gmail.com'
 EMAIL_HOST_PASSWORD = 'pnzf lihl vkbd jost' # Replace this with the App Password
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'noreply@visionaryvault.com'  # The email that will appear as the sender
+# DEFAULT_FROM_EMAIL = 'georgipanayotov1995@gmail.com'  # The email that will appear as the sender
 
 AUTHENTICATION_BACKENDS = (
     'VisionaryVaultApp.accounts.authentication.EmailOrUsernameBackend',

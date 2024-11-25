@@ -11,22 +11,31 @@ class ArtPieceForm(forms.ModelForm):
         label="Select Art Category"
     )
 
-    description = forms.CharField(
-        required=True,
-        widget=forms.Textarea(attrs={"placeholder": "Enter a description"}),
-        error_messages={'required': 'Selecting Art Category is mandatory'}  # Empty string removes the default message
-    )
-
-    price = forms.DecimalField(
-        required=True,
-        widget=forms.NumberInput(attrs={'placeholder': 'Enter price'}),
-        min_value=0.01,  # You can adjust the minimum value if needed
-        decimal_places=2
-    )
-
     class Meta:
         model = ArtPiece
-        fields = ['art_image', 'description', 'categories', 'price']
+        fields = ['title', 'art_image', 'description', 'categories', 'price']
+
+        error_messages = {
+            'art_image': {
+                'required': 'Please upload an image for your artwork.',  # Custom error for art_image
+            },
+            'description': {
+                'required': 'Please provide a description for your artwork.',  # Custom error for description
+            },
+            'categories': {
+                'required': 'Selecting an Art Category is mandatory.',
+            },
+            'price': {
+                'required': 'Price is required. Please enter the price.',
+            },
+        }
+
+        widgets = {
+            'description': forms.TextInput(attrs={'placeholder': 'Enter a description'}),
+            'price': forms.NumberInput(attrs={'placeholder': 'Enter price'}),
+            'title': forms.TextInput(attrs={'placeholder': 'Give your piece of art a name'}),
+            'categories': forms.Select(attrs={'placeholder': 'Select an Art Category'}),
+        }
 
 
 class EditCommentForm(forms.ModelForm):

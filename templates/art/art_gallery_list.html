@@ -10,12 +10,7 @@
         <!-- Upload Art Button on the left -->
         <a href="{% url 'upload_art' %}" class="btn btn-success">Upload Art Piece</a>
 
-        <!-- Report Art Button on the right -->
-        {% if art_pieces %}
-         <a href="{% url 'report' art_pieces.first.id %}" class="btn btn-danger report-btn">Report Art or Comment 🚩</a>
-        {% else %}
-           <span class="btn btn-danger report-btn">No art pieces available to report.</span>
-        {% endif %}
+   
     </div>
 {% endif %}
 
@@ -25,7 +20,7 @@
             <div class="card" style="width: 100%;">
             <img src="{{ art_piece.art_image.url }}" class="card-img-top" alt="Art Piece">
                  <div class="card-body">
-                    <h5 class="card-title">{{ art_piece.description|default:"No Description" }}</h5>
+                    <h5 class="card-title">{{ art_piece.title|default:"No Description" }}</h5>
                     <!-- Display if Art Piece is Reported -->
                     {% if art_piece.status == 'reported' %}
                         {% if user.is_staff %}
@@ -54,6 +49,8 @@
                       </div>
                     {% if user.is_authenticated %}
                     <div class="d-flex justify-content-between mb-3">
+                    
+                             
                               <button id="like-btn-{{ art_piece.id }}" class="btn btn-primary like-btn"
                                 onclick="likeArtPiece({{ art_piece.id }})">
                                 {% if user in art_piece.liked_users.all %}
@@ -61,7 +58,14 @@
                                 {% else %}
                                    Like ❤️
                                 {% endif %}
-                            </button>
+                               </button>
+                            
+                            
+                            <form method="POST" action="{% url 'report' art_piece.id %}" class="mt-2">
+                               {% csrf_token %}
+                               <button type="submit" class="btn btn-danger">Report Art or Comment 🚩</button>
+                            </form>
+                            
                             <form method="POST" action="{% url 'add_to_basket' art_piece.id %} ">
                                {% csrf_token %}
                                 <button type="submit" class="btn btn-primary" >BUY</button>
@@ -73,6 +77,7 @@
                             <textarea class="form-control mb-2" name="content" id="comment-content-{{ art_piece.id }}" rows="2" placeholder="Add a comment..."></textarea>
                             <button type="submit" class="btn btn-secondary btn-success">Post Comment 💬</button>
                         </form>
+                        
                     {% endif %}
                 </div>
                 <div class="card-footer">

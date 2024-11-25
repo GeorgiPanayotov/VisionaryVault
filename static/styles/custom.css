@@ -142,3 +142,7 @@
     padding: 10px;          /* Add padding around the text */
     border-radius: 5px;     /* Optional: add rounded corners */
 }
+
+.spacing {
+    margin-right: 40px; /* Adjust to your desired spacing */
+}

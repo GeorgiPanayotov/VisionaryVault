@@ -20,17 +20,17 @@
     position: relative;
     padding: 5px 10px;
     font-size: 12px;
-    width: 30%;
+    width: 15%;
     height: 50px;
-    border-radius: 5px;
-    justify-content: center;
+    border-radius: 7px;
+    justify-content: right;
 }
 
 .button-container {
     display: flex; /* Flexbox layout */
-    gap: 10px; /* Space between buttons */
+    gap: 7px; /* Space between buttons */
     justify-content: flex-start; /* Align buttons to the left */
-    margin-top: 10px; /* Add spacing above */
+    margin-top: 50px; /* Add spacing above */
 }
 
 /* Position the Report Art Piece button at the bottom */

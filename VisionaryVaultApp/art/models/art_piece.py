@@ -20,6 +20,13 @@ class ArtPiece(UserRelatedModel, TimestampStatusModel):
         blank=False
     )
 
+    title = models.CharField(
+        verbose_name='Title',
+        max_length=40,
+        null=False,
+        blank=False
+    )
+
     description = models.TextField(
         max_length=200,
         null=True,
