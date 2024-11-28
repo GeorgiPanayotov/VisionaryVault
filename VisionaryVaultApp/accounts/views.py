@@ -10,15 +10,37 @@ from .forms import UserRegistrationForm, UserUpdateForm, CustomLoginForm, EmailC
     CustomPasswordResetForm
 from .models import Profile
 
+User = get_user_model()
+
+
+class AuthService:
+    @staticmethod
+    def authenticate_user(request, username_or_email, password):
+        user = authenticate(username=username_or_email, password=password)
+
+        if user is None:
+            # Attempt to find user by email
+            try:
+                user_by_email = User.objects.get(email=username_or_email)
+                user = authenticate(request, username=user_by_email.username, password=password)
+            except User.DoesNotExist:
+                pass
+
+        return user
+
+
+class ProfileService:
+    @staticmethod
+    def delete_user(user):
+        # Implement any necessary cleanup before user deletion
+        user.delete()
+
 
 class CustomLogoutView(View):
     def post(self, request):
         logout(request)
         messages.success(request, "You have been logged out successfully.")
         return redirect('home')
-
-
-User = get_user_model()
 
 
 class CustomLoginView(LoginView):
@@ -29,7 +51,7 @@ class CustomLoginView(LoginView):
         username_or_email = form.cleaned_data['username_or_email']
         password = form.cleaned_data['password']
 
-        user = authenticate(self.request, username=username_or_email, password=password)
+        user = AuthService.authenticate_user(self.request, username_or_email, password)
 
         if user is None:
             try:
@@ -45,10 +67,6 @@ class CustomLoginView(LoginView):
 
         messages.error(self.request, "Invalid username/email or password.")
         return self.form_invalid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Invalid username/email or password.")
-        return super().form_invalid(form)
 
 
 def register(request):
@@ -98,7 +116,7 @@ def profile_details(request):
 def delete_profile(request):
     if request.method == 'POST':
         user = request.user
-        user.delete()
+        ProfileService.delete_user(user)
         messages.success(request, "Your profile has been deleted successfully.")
         logout(request)
         return redirect('home')

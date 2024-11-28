@@ -13,6 +13,10 @@
             <ul class="list-group mb-3">
                 {% for item in basket.items.all %}
                     <li class="list-group-item d-flex justify-content-between align-items-center">
+                               <p>Name of art piece:</p>
+                        <span>{{ item.art_piece.title }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
                         {{ item.art_piece.description }}
                         <span>   {{ item.art_piece.price|floatformat:2|add:item.quantity|floatformat:2 }}</span>
                     </li>
@@ -25,7 +29,7 @@
         </div>
     </div>
     
-    <p> Please add additional contact information below</p>
+    <p> Please add additional contact information below if needed:</p>
 
 <form method="POST" action="#">
     {% csrf_token %}

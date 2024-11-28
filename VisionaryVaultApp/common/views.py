@@ -30,19 +30,75 @@ def about_view(request):
     return render(request, 'common/about.html')
 
 
-class BasketView(TemplateView):
-    template_name = 'common/basket.html'
+class UserProfileService:
+    @staticmethod
+    def update_profile(user, address=None, phone_number=None):
+        profile = user.profile
+        if address:
+            profile.address = address
+        if phone_number:
+            profile.phone_number = phone_number
+        profile.full_clean()
+        profile.save()
 
-    def dispatch(self, request, *args, **kwargs):
-        # Redirect to login if user is not authenticated
-        if not request.user.is_authenticated:
-            return redirect('login')
-        return super().dispatch(request, *args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # Get the basket for the logged-in user
-        basket = Basket.objects.filter(user=self.request.user).prefetch_related('items').first()
+class BasketService:
+    @staticmethod
+    def process_basket(user):
+        """Process the user's basket, delete art pieces, and clear the basket items."""
+        try:
+            with transaction.atomic():
+                # Fetch the basket and check if it contains items
+                basket = Basket.objects.filter(user=user).first()
+                if basket and basket.items.exists():
+                    # Record items for the order
+                    basket_items = list(basket.items.all())  # Create a list of items
+
+                    # Process and delete each art piece before clearing the basket
+                    for item in basket_items:
+                        print(f"Processing {item.art_piece.description} for {user.username}.")
+                        item.art_piece.delete()  # Delete the associated art piece
+
+                    # Now clear the basket after processing
+                    basket.items.all().delete()
+
+                    return True  # Indicate success
+                else:
+                    return False  # Indicates that the basket was empty or did not exist
+
+        except Exception as e:
+            # Here, we could log the error instead of sending a message to the request
+            print(f"An error occurred while processing the basket: {str(e)}")
+            return False
+
+    @staticmethod
+    def remove_item_from_basket(user, item_id):
+        """Remove an item from the user's basket."""
+        item = get_object_or_404(BasketItem, id=item_id)
+        if item.basket.user == user:
+            item.delete()  # Remove the item from the basket
+            return True
+        return False
+
+    @staticmethod
+    def add_art_piece_to_basket(user, art_piece):
+        """Add an art piece to the user's basket."""
+        basket, created = Basket.objects.get_or_create(user=user)
+
+        # Check if the art piece is already in the basket
+        basket_item = BasketItem.objects.filter(basket=basket, art_piece=art_piece).first()
+
+        if basket_item:
+            return False  # Art piece is already in the basket
+        else:
+            # If not, create a new basket item
+            BasketItem.objects.create(basket=basket, art_piece=art_piece, quantity=1)
+            return True
+
+    @staticmethod
+    def get_user_basket(user):
+        """Retrieve the user's basket and calculate the total price and item count."""
+        basket = Basket.objects.filter(user=user).prefetch_related('items').first()
 
         if basket and basket.items.exists():
             total_price = sum(item.total_price for item in basket.items.all())
@@ -51,6 +107,22 @@ class BasketView(TemplateView):
             total_price = 0
             basket_item_count = 0
 
+        return basket, total_price, basket_item_count
+
+
+class BasketView(TemplateView):
+    template_name = 'common/basket.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        # Redirect to log in if user is not authenticated
+        if not request.user.is_authenticated:
+            return redirect('login')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # Get the basket for the logged-in user
+        basket, total_price, basket_item_count = BasketService.get_user_basket(self.request.user)
 
         context['basket'] = basket
         context['total_price'] = total_price
@@ -64,22 +136,13 @@ class AddToBasketView(View):
         if not request.user.is_authenticated:
             return redirect('login')
 
-        # Retrieve the art piece object
         art_piece = get_object_or_404(ArtPiece, id=art_piece_id)
 
-        # Get or create a basket for the user
-        basket, created = Basket.objects.get_or_create(user=request.user)
-
-        # Add the art piece to the basket or increment its quantity
-        basket_item = BasketItem.objects.filter(basket=basket, art_piece=art_piece).first()
-
-        if basket_item:
-            # If the item is already in the basket, show an error message
-            messages.error(request, f"This art piece is already in your basket.")
+        # Attempt to add the art piece to the basket using the service
+        if BasketService.add_art_piece_to_basket(request.user, art_piece):
+            messages.success(request, "The chosen art piece has been added to your basket.")
         else:
-            # Otherwise, create a new basket item
-            BasketItem.objects.create(basket=basket, art_piece=art_piece, quantity=1)
-            messages.success(request, f"The chosen art piece has been added to your basket.")
+            messages.error(request, "This art piece is already in your basket.")
 
             # Redirect to the basket view
         return redirect('view_basket')
@@ -87,12 +150,10 @@ class AddToBasketView(View):
 
 class RemoveFromBasketView(View):
     def post(self, request, item_id):
-        # Retrieve the basket item
-        item = get_object_or_404(BasketItem, id=item_id)
-
-        # Ensure the item belongs to the current user's basket
-        if item.basket.user == request.user:
-            item.delete()  # Remove the item from the basket
+        if BasketService.remove_item_from_basket(request.user, item_id):
+            messages.success(request, "Item removed from your basket.")
+        else:
+            messages.error(request, "Could not remove the item. It may not be in your basket.")
 
         return redirect('view_basket')
 
@@ -122,48 +183,15 @@ class ProcessCheckoutView(View):
         phone_number = request.POST.get('phone_number')
         payment_method = request.POST.get('payment_method')
 
-        # Fetch the user's profile to save address and phone number
-        profile = request.user.profile
-        if address:
-            profile.address = address
-        if phone_number:
-            profile.phone_number = phone_number
-        profile.save()
-
         try:
-            profile.full_clean()  # This will validate all fields of the profile
+            UserProfileService.update_profile(request.user, address, phone_number)
         except ValidationError as e:
             messages.error(request, f"{', '.join(e.messages)}")
             return redirect('checkout')
 
-            # Save the profile after validation
-        profile.save()
+        if BasketService.process_basket(request.user):
+            messages.success(request, "Your order has been processed successfully!")
+        else:
+            messages.error(request, "Your basket is empty or something went wrong.")
 
-        try:
-            with transaction.atomic():
-                # Fetch the basket and check if it contains items
-                basket = Basket.objects.filter(user=request.user).first()
-                if basket and basket.items.exists():
-                    # Optionally record items for the order
-                    basket_items = list(basket.items.all())  # Create a list of items
-
-                    # Process and delete each art piece before clearing the basket
-                    for item in basket_items:
-                        print(f"Processing {item.art_piece.description} for {name}.")
-                        item.art_piece.delete()  # Delete the associated art piece
-
-                    # Now clear the basket after processing
-                    basket.items.all().delete()
-
-                    # Add a success message
-                    messages.success(request, "Your order has been processed successfully!")
-                else:
-                    messages.error(request, "Your basket is empty or something went wrong.")
-                    return redirect('view_basket')
-
-        except Exception as e:
-            messages.error(request, f"An error occurred while processing your order: {str(e)}")
-            return redirect('view_basket')
-
-            # Redirect to an order confirmation or gallery page
         return redirect('art_gallery_list')

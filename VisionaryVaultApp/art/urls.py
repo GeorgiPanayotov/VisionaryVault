@@ -6,7 +6,7 @@ from .views import (
     ArtPieceCreateView,
     ArtPieceDeleteView,
     ArtPieceUpdateView,
-    CategoryListView, MyArtListView,
+    MyArtListView,
 
 )
 
@@ -15,7 +15,6 @@ urlpatterns = [
     path('gallery/', ArtGalleryListView.as_view(), name='art_gallery_list'),
     path('my_art/', MyArtListView.as_view(), name='my_art'),
     path('upload/', ArtPieceCreateView.as_view(), name='upload_art'),
-    path('categories/', CategoryListView.as_view(), name='category_list'),
     path('<int:pk>/', include([
         path('details/', ArtPieceDetailView.as_view(), name='art_piece_detail'),
         path('art/edit/', ArtPieceUpdateView.as_view(), name='edit_art_piece'),

@@ -12,6 +12,16 @@ from VisionaryVaultApp.art.choices import CategoryType
 """Art piece functionality"""
 
 
+class UserPermissionsService:
+    @staticmethod
+    def can_comment(user):
+        return user.is_authenticated  # More complex rules can be added here
+
+    @staticmethod
+    def is_owner(user, art_piece):
+        return art_piece.user == user
+
+
 class ArtGalleryListView(ListView):
     model = ArtPiece
     template_name = 'art/art_gallery_list.html'
@@ -23,12 +33,7 @@ class ArtGalleryListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user = self.request.user
-
-        if user.is_authenticated:
-            context['can_comment'] = True
-            context['art_pieces'] = context['art_pieces']
-
+        context['can_comment'] = UserPermissionsService.can_comment(self.request.user)
         return context
 
 
@@ -49,7 +54,7 @@ class ArtPieceDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['is_owner'] = self.object.user == self.request.user
+        context['is_owner'] = UserPermissionsService.is_owner(self.request.user, self.object)
         return context
 
 
@@ -94,13 +99,3 @@ class ArtPieceDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(request, "Art piece deleted successfully.")
         return super().delete(request, *args, **kwargs)
-
-
-class CategoryListView(ListView):
-    model = Category
-    template_name = 'art/upload_art.html'
-    context_object_name = 'categories'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context

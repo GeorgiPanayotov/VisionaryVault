@@ -18,7 +18,7 @@
         <tbody>
             {% for item in basket.items.all %}
                 <tr>
-                    <td>{{ item.art_piece.description }}</td>
+                    <td>{{ item.art_piece.title }}</td>
                     <td>${{ item.art_piece.price }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>
