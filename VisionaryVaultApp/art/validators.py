@@ -1,7 +1,7 @@
 from cloudinary.api import resources
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
-from cloudinary.models import CloudinaryField
+from cloudinary.models import CloudinaryResource
 from django.core.exceptions import ValidationError
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
@@ -60,11 +60,20 @@ class FileExtensionValidator:
 
     def __call__(self, value):
         # For CloudinaryField or CloudinaryResource
-        if hasattr(value, 'url'):
-            extension = Path(value.url).suffix[1:].lower()
+        if isinstance(value, CloudinaryResource):
+            # Cloudinary resources typically use a URL to access the file
+            if hasattr(value, 'url') and value.url:
+                extension = Path(value.url).suffix[1:].lower()
+            else:
+                # If no URL is available, raise a validation error
+                raise ValidationError("File URL is not available in Cloudinary resource.")
+
+            # Handle regular file fields
+        elif hasattr(value, 'name'):
+            extension = Path(value.name).suffix[1:].lower() if value.name else ''
+
         else:
-            # For regular file fields
-            raise ValidationError("File URL is not available in Cloudinary resource.")
+            extension = 'A'
 
         # Validate extension
         if self.allowed_extensions is not None and extension not in self.allowed_extensions:
