@@ -15,7 +15,7 @@ import cloudinary_storage
 import cloudinary
 import environ
 from pathlib import Path
-
+from decouple import config
 from django.contrib.sites import requests
 from django.urls import reverse_lazy
 
@@ -43,12 +43,12 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&pm(v_lxqskpzz5xfhyjynhn4yl(i1sx5mzn6(3ae-vjriucrl'
+SECRET_KEY = config('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', None) == "True"
 
-# ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
@@ -156,6 +156,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/usr/local/var/www/static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/usr/local/var/www/media/'
+
 STATICFILES_DIRS = (
     BASE_DIR / 'static',
 )
@@ -171,13 +176,12 @@ LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGIN_URL = 'login'
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # For example, smtp.gmail.com for Gmail
-EMAIL_PORT = 587  # Or another port depending on your email service
-EMAIL_HOST_USER = 'georgipanayotov1995@gmail.com'
-EMAIL_HOST_PASSWORD = 'pnzf lihl vkbd jost' # Replace this with the App Password
-EMAIL_USE_TLS = True
-# DEFAULT_FROM_EMAIL = 'georgipanayotov1995@gmail.com'  # The email that will appear as the sender
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST') # For example, smtp.gmail.com for Gmail
+EMAIL_PORT = config('EMAIL_PORT')  # Or another port depending on your email service
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
 
 AUTHENTICATION_BACKENDS = (
     'VisionaryVaultApp.accounts.authentication.EmailOrUsernameBackend',
