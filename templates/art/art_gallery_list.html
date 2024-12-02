@@ -10,7 +10,7 @@
         <!-- Upload Art Button on the left -->
         <a href="{% url 'upload_art' %}" class="btn btn-success">Upload Art Piece</a>
 
-   
+
     </div>
 {% endif %}
 
@@ -49,8 +49,8 @@
                       </div>
                     {% if user.is_authenticated %}
                     <div class="d-flex justify-content-between mb-3">
-                    
-                             
+
+
                               <button id="like-btn-{{ art_piece.id }}" class="btn btn-primary like-btn"
                                 onclick="likeArtPiece({{ art_piece.id }})">
                                 {% if user in art_piece.liked_users.all %}
@@ -59,13 +59,13 @@
                                    Like ❤️
                                 {% endif %}
                                </button>
-                            
-                            
+
+
                             <form method="POST" action="{% url 'report' art_piece.id %}" class="mt-2">
                                {% csrf_token %}
                                <button type="submit" class="btn btn-danger">Report Art or Comment 🚩</button>
                             </form>
-                            
+
                             <form method="POST" action="{% url 'add_to_basket' art_piece.id %} ">
                                {% csrf_token %}
                                 <button type="submit" class="btn btn-primary" >BUY</button>
@@ -77,7 +77,7 @@
                             <textarea class="form-control mb-2" name="content" id="comment-content-{{ art_piece.id }}" rows="2" placeholder="Add a comment..."></textarea>
                             <button type="submit" class="btn btn-secondary btn-success">Post Comment 💬</button>
                         </form>
-                        
+
                     {% endif %}
                 </div>
                 <div class="card-footer">
@@ -159,9 +159,18 @@ $(document).ready(function() {
             if (response.status !== 201) {
                 const errorText = await response.text();
                 console.error('Error occurred:', errorText);
-                alert('Failed to submit comment. Server responded with: ' + errorText);
+                
+                if (errorText.content) {
+                    let errorMessage = errorText.content.join(', ');
+                    errorMessage = errorMessage.replace('localhost:8000', 'VisionaryVault.com');
+                    alert('Error: ' + errorMessage); // Display the error message
+                } else {
+                    alert('Error: ' + errorMessage);
+                }
+                
                 throw new Error('Failed to submit comment');
             }
+            
 
             const result = await response.json();
             console.log('Server Response:', result);
@@ -187,7 +196,7 @@ $(document).ready(function() {
 
         } catch (error) {
             console.error('Error occurred:', error);
-            alert('Could not submit comment. Try again later.');
+            alert('The comment section cannot be empty. Leave a comment and try again.');
         }
     });
 });
@@ -241,7 +250,8 @@ $(document).ready(function() {
 
     } catch (error) {
     console.error('Error occurred:', error);  // Log the full error message
-    alert('Could not update comment. Try again later.');
+    const errorMessage = 'The empty section cannot be empty. Please leave a comment.'.replace('localhost:8000', 'VisionaryVault.com');
+    alert(errorMessage);
 }
 });
 

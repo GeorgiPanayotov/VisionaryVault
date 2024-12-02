@@ -16,7 +16,7 @@ class CommentAdmin(admin.ModelAdmin):
     def mark_as_unreported(self, request, queryset):
         queryset.update(status='active')
 
-    mark_as_unreported.short_description = "Mark selected art pieces as active"
+    mark_as_unreported.short_description = "Mark selected comments as active"
 
 
 @admin.register(ArtPiece)

@@ -24,7 +24,13 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.art_piece_id = self.kwargs.get('art_piece_id')  # Set the selected art piece
+        art_piece_id = self.kwargs.get('art_piece_id')
+        form.instance.art_piece_id = art_piece_id  # Set the selected art piece
+
+        art_piece = get_object_or_404(ArtPiece, id=art_piece_id)
+        art_piece.status = 'reported'  # Replace 'reported' with the actual field value if different
+        art_piece.save()
+
         if form.instance.comment:
             form.instance.comment.status = 'reported'
             form.instance.comment.save()

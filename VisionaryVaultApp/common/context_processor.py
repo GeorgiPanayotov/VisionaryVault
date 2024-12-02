@@ -1,4 +1,5 @@
 from .models import Basket
+"""Adding context data globally"""
 
 
 def basket_count(request):

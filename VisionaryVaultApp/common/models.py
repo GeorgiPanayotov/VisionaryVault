@@ -9,9 +9,20 @@ class Basket(UserRelatedModel):
 
 
 class BasketItem(models.Model):
-    basket = models.ForeignKey(Basket, on_delete=models.CASCADE, related_name='items')
-    art_piece = models.ForeignKey(ArtPiece, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    basket = models.ForeignKey(
+        Basket,
+        on_delete=models.CASCADE,
+        related_name='items'
+    )
+
+    art_piece = models.ForeignKey(
+        ArtPiece,
+        on_delete=models.CASCADE
+    )
+
+    quantity = models.PositiveIntegerField(
+        default=1
+    )
 
     class Meta:
         unique_together = ('basket', 'art_piece')

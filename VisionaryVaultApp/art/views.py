@@ -15,7 +15,7 @@ from VisionaryVaultApp.art.choices import CategoryType
 class UserPermissionsService:
     @staticmethod
     def can_comment(user):
-        return user.is_authenticated  # More complex rules can be added here
+        return user.is_authenticated
 
     @staticmethod
     def is_owner(user, art_piece):
@@ -28,7 +28,6 @@ class ArtGalleryListView(ListView):
     context_object_name = 'art_pieces'
 
     def get_queryset(self):
-        # Return all art pieces, we'll handle slicing in the template
         return ArtPiece.objects.all()
 
     def get_context_data(self, **kwargs):
@@ -39,11 +38,11 @@ class ArtGalleryListView(ListView):
 
 class MyArtListView(LoginRequiredMixin, ListView):
     model = ArtPiece
-    template_name = 'art/private_gallery.html'  # Your template name
+    template_name = 'art/private_gallery.html'
     context_object_name = 'art_pieces'
 
     def get_queryset(self):
-        # Filter art pieces by the logged-in user
+        """Filter art pieces by the logged-in user"""
         return ArtPiece.objects.filter(user=self.request.user)
 
 
@@ -85,6 +84,10 @@ class ArtPieceUpdateView(UpdateView):
 
     def get_queryset(self):
         return ArtPiece.objects.filter(user=self.request.user)
+
+
+"""Ensures that user must be authenticated with method_decorator, 
+if not it will be redirected to the login page as specified in settings.py"""
 
 
 @method_decorator(login_required, name='dispatch')

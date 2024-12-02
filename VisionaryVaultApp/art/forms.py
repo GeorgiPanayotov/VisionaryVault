@@ -1,15 +1,8 @@
 from django import forms
 from .models import ArtPiece, Category, Comment
-from .choices import CategoryType
 
 
 class ArtPieceForm(forms.ModelForm):
-    categories = forms.ModelChoiceField(
-        queryset=Category.objects.all(),  # Get all categories from the database
-        widget=forms.Select(),  # You can change this to Select if you want a dropdown
-        required=True,
-        label="Select Art Category"
-    )
 
     class Meta:
         model = ArtPiece
@@ -62,6 +55,7 @@ class CommentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['content'].widget = forms.Textarea(attrs={'placeholder': 'Enter your comment here...'})
 
+    """Preventing from saving empty comments by overriding the clean_content method"""
     def clean_content(self):
         content = self.cleaned_data.get('content')
         if not content:
@@ -72,7 +66,7 @@ class CommentForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['category_name', 'description']  # Use correct field names
+        fields = ['category_name', 'description']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -152,7 +152,7 @@ class EmailChangeForm(forms.ModelForm):
 class CustomPasswordResetForm(PasswordResetForm):
     def send_mail(self, subject_template_name, email_template_name, context, from_email, to_email,
                   html_email_template_name=None, extra_email_context=None):
-        print(f"Sending password reset email to your")
+        print(f"Sending password reset email to you")
         # Customizing the email sending process here if needed
         super().send_mail(subject_template_name, email_template_name, context, from_email, to_email,
                           html_email_template_name)
