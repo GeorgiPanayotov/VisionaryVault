@@ -7,10 +7,6 @@
 <form method="post">
     {% csrf_token %}
     <div>
-        {{ form.art_piece.label }}
-        {{ form.art_piece }}
-    </div>
-    <div>
         {{ form.comment.label }}
         {{ form.comment }} <!-- This will initially be empty -->
     </div>

@@ -15,28 +15,19 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
     template_name = 'reporting/report.html'
     success_url = reverse_lazy('art_gallery_list')
 
-    def get_form(self, form_class=None):
-        # Capture art_piece from GET request
-        form = super().get_form(form_class)
-        art_piece_id = self.request.GET.get('art_piece')
-
-        if art_piece_id:
-            form.fields['art_piece'].initial = art_piece_id  # Set the initial value for art_piece
-            form.filter_comments(art_piece_id)  # Filter comments based on selected art_piece
-
-        return form
+    def get_form_kwargs(self):
+        """Pass additional arguments to the form."""
+        kwargs = super().get_form_kwargs()
+        art_piece_id = self.kwargs.get('art_piece_id')
+        kwargs['art_piece_id'] = art_piece_id  # Pass the selected art piece ID to the form
+        return kwargs
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-
-        # Handle status setting for the art piece or comment
-        if form.instance.art_piece:
-            form.instance.art_piece.status = 'reported'
-            form.instance.art_piece.save()
-        elif form.instance.comment:
+        form.instance.art_piece_id = self.kwargs.get('art_piece_id')  # Set the selected art piece
+        if form.instance.comment:
             form.instance.comment.status = 'reported'
             form.instance.comment.save()
-
         return super().form_valid(form)
 
     def get(self, request, *args, **kwargs):
