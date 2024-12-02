@@ -10,10 +10,7 @@ class ArtPieceForm(forms.ModelForm):
 
         error_messages = {
             'art_image': {
-                'required': 'Please upload an image for your artwork.',  # Custom error for art_image
-            },
-            'description': {
-                'required': 'Please provide a description for your artwork.',  # Custom error for description
+                'required': 'Please upload an image for your artwork.',
             },
             'categories': {
                 'required': 'Selecting an Art Category is mandatory.',
@@ -62,13 +59,3 @@ class CommentForm(forms.ModelForm):
             raise forms.ValidationError('Comment cannot be empty')
         return content
 
-
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = Category
-        fields = ['category_name', 'description']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['category_name'].widget.attrs.update({'placeholder': 'Category Name'})
-        self.fields['description'].widget = forms.Textarea(attrs={'placeholder': 'Optional description...'})

@@ -1,11 +1,10 @@
 from decimal import Decimal
-
 from cloudinary.models import CloudinaryField
-from django.core.validators import FileExtensionValidator, MinValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 from .user_related_model import UserRelatedModel
 from .timestamp_status_model import TimestampStatusModel
-from VisionaryVaultApp.art.validators import FileSizeValidator
+from VisionaryVaultApp.art.validators import FileSizeValidator, FileExtensionValidator
 
 
 class ArtPiece(UserRelatedModel, TimestampStatusModel):
