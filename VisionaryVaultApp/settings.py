@@ -26,16 +26,16 @@ env = environ.Env()
 env.read_env(os.path.join(BASE_DIR, '.env'))
 
 cloudinary.config(
-    cloud_name=env('CLOUD_NAME'),
-    api_key=env('API_KEY'),
-    api_secret=env('API_SECRET')
+    cloud_name=config('CLOUD_NAME'),
+    api_key=config('API_KEY'),
+    api_secret=config('API_SECRET')
 )
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': env('CLOUD_NAME'),
-    'API_KEY': env('API_KEY'),
-    'API_SECRET': env('API_SECRET'),
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -135,7 +135,7 @@ DATABASES = {
         "USER": config("DB_USER"),
         "PASSWORD": config("DB_PASSWORD"),
         "HOST": config("DB_HOST"),
-        "PORT": config("DB_PORT"),
+        "PORT": config("DB_PORT", default="5432"),
     }
 }
 
@@ -179,7 +179,6 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/usr/local/var/www/media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -192,8 +191,8 @@ LOGIN_URL = 'login'
 
 # Email settings
 EMAIL_BACKEND = config('EMAIL_BACKEND')
-EMAIL_HOST = config('EMAIL_HOST') # For example, smtp.gmail.com for Gmail
-EMAIL_PORT = config('EMAIL_PORT')  # Or another port depending on your email service
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS = config('EMAIL_USE_TLS')
