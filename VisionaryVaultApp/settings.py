@@ -31,6 +31,7 @@ cloudinary.config(
     api_secret=env('API_SECRET')
 )
 
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': env('CLOUD_NAME'),
     'API_KEY': env('API_KEY'),
@@ -47,6 +48,21 @@ SECRET_KEY = config('SECRET_KEY', None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', None) == "True"
+
+"""False in Development, True in Production"""
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default='False') == "True"
+
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default='False') == 'True'
+
+"""Ensure application is being served over HTTPS before setting to True"""
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default='False') == "True"
+
+"""Set to 1 hour (3600 seconds) or 0 for testing,change to (31536000 seconds) for 1 year for production"""
+SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=0, cast=int)
+
+"""False in Development, True in Production"""
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default='False') == 'True'
+SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default='False') == 'True'
 
 ALLOWED_HOSTS = config('ALLOWED_HOSTS').split(',')
 
@@ -114,12 +130,12 @@ WSGI_APPLICATION = 'VisionaryVaultApp.wsgi.application'
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "visionaryvault",
-        "USER": "macbook",
-        "PASSWORD": "270395",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "ENGINE": config("DB_ENGINE"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
 
@@ -155,16 +171,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
+
 STATIC_URL = '/static/'
-STATIC_ROOT = '/usr/local/var/www/static/'
+STATIC_ROOT = '/usr/local/var/www/static/'  # Path to collect static files during deployment
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # Your project's local static files
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/usr/local/var/www/media/'
-
-STATICFILES_DIRS = (
-    BASE_DIR / 'static',
-)
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
