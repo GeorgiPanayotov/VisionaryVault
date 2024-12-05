@@ -49,6 +49,8 @@ SECRET_KEY = config('SECRET_KEY', None)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', None) == "True"
 
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS').split(',')
+
 """False in Development, True in Production"""
 CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default='False') == "True"
 
