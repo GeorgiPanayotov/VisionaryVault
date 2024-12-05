@@ -5,11 +5,12 @@
 {% block content %}
 <h2>{{ art_piece.title }}</h2>
 
-<!-- Art Image -->
+
 <img src="{{ art_piece.art_image.url }}" alt="{{ art_piece.title }}" class="img-fluid">
 
-<!-- Art Details -->
-<p><strong>Created on:</strong> {{ art_piece.timestamp }}</p><!-- Assuming the user model has first and last name -->
+
+<p><strong>Created on:</strong> {{ art_piece.timestamp }}</p>
 <p><strong>Likes:</strong> {{ art_piece.likes_count }}</p>
+    <a href="{% url 'my_art' %}" class="btn btn-danger"> Go Back  </a>
     
 {% endblock %}

@@ -9,5 +9,5 @@
     {{ form.as_p }}  <!-- Render the form for editing -->
     <button type="submit" class="btn btn-success">Save Update</button>
 </form>
-<a href="{% url 'my_art' %}">Cancel</a>  <!-- Link back to detail view -->
+<a href="{% url 'my_art' %}" class="btn btn-danger">Cancel editing</a>  <!-- Link back to detail view -->
 {% endblock %}
