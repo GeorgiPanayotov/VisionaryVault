@@ -1,0 +1,47 @@
+@import url('typography.css');
+@import url('layout.css');
+@import url('navbar.css');
+@import url('buttons.css');
+@import url('forms.css');
+@import url('responsive.css');
+@import url('custom.css');
+
+.error {
+    color: #af0b0b;
+    font-weight: bold;
+}
+
+.text-center {
+    margin-bottom: 20px; /* Add spacing for footer */
+}
+
+.card {
+    transition: transform 0.2s; /* Animation for hover effect */
+}
+
+.card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.info-bar {
+    background: linear-gradient(90deg, #e0f7fa, #dcd69e);
+}
+
+.info-item {
+    flex: 1; /* Equal spacing for each item */
+    text-align: center; /* Center-align content */
+}
+
+.info-item i {
+    font-size: 1.2rem; /* Slightly larger icons */
+}
+
+.info-bar p {
+    margin-bottom: 0; /* Remove default paragraph margin */
+    font-size: 0.9rem; /* Slightly smaller text */
+}
+
+.info-bar:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly larger shadow on hover */
+    transform: translateY(-2px); /* Move up slightly */
+}

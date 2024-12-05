@@ -1,0 +1,41 @@
+@media (max-width: 768px) {
+    .navbar-brand, .nav-link {
+        font-size: 14px;  /* Adjusting font size for smaller screens */
+    }
+
+    .btn {
+        font-size: 12px;  /* Adjusting button font size */
+        margin: 3px;      /* Adjusting button margin */
+    }
+
+    /* You can add more responsive styles as needed */
+    body.homepage h1 {
+        font-size: 24px;  /* Adjusting heading size for smaller screens */
+    }
+
+    form {
+        padding: 10px;    /* Adjusting form padding for better fit */
+    }
+}
+
+/* Pop-up message styles */
+#popup-message {
+    position: fixed;
+    top: 20px;   /* Adjust top position for visibility */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #6da6cc; /* Green background for success message */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none;  /* Initially hidden */
+    z-index: 9999;
+    opacity: 0;     /* Start with opacity 0 */
+    transition: opacity 0.3s ease, top 0.3s ease; /* Smooth transition for opacity */
+}
+
+#popup-message.show {
+    display: block;    /* Show the pop-up when the 'show' class is added */
+    opacity: 1;        /* Fade in */
+    top: 40px;         /* Adjusted for a slightly lower position */
+}

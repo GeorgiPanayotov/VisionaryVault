@@ -1,0 +1,101 @@
+html, body {
+    height: 100%; /* Ensure full height */
+    margin: 0; /* Remove default margin */
+    padding: 0;
+    background-color: rgba(91, 184, 162, 0.66); /* Set your background color (if needed) */
+    background-image: url("../images/visionary_vault_background.jpeg"); /* Set your background image */
+    background-size: cover; /* Ensure the background covers the entire page */
+    background-attachment: fixed; /* Keeps the background fixed while scrolling */
+    background-position: center; /* Remove default padding */
+}
+
+body {
+    color: rgb(23, 116, 138); /* Text color */
+    font-family: "Arial", sans-serif; /* Set the font style */
+    letter-spacing: 1px; /* Adjust spacing between letters */
+    line-height: 1.5; /* Adjust spacing between lines */
+}
+
+/* Text Shadow for Depth */
+h1, h2, h3, h4, h5, h6 {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Gradient Text Example for Headings */
+.gradient-text {
+    background: linear-gradient(45deg, #ff6b6b, #f06595);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Hover Effect for Links */
+a {
+    color: #128aa5; /* Initial link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+a:hover {
+    color: #1ad55b; /* Change color on hover */
+    text-decoration: underline;
+}
+
+/* Transformations for Headings */
+h1 {
+    transition: transform 0.3s ease;
+}
+
+h1:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* Optional styling for h2 and paragraphs for spacing */
+h2 {
+    margin-bottom: 20px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+/* Animation Example */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn ease 2s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center content horizontally */
+    justify-content: flex-start; /* Center content vertically */
+    min-height: 100vh; /* Full viewport height */
+    border-radius: 300px;
+    text-align: center; /* Center text */
+    padding: 50px; /* Optional: Add padding if needed */
+    height: auto;
+
+}
+
+/* Content styling - optional, remove if not needed */
+.content {
+    text-align: center;
+    margin: 0; /* Remove margin if there's any extra space */
+    padding: 10px; /* Optional: Add padding if needed */
+}
+
+.art-gallery-container { /* Enable vertical scrolling */
+    padding-bottom: 50px;
+}
+
+textarea {
+    resize: vertical;       /* Allow resizing vertically, but limit to a certain height */
+    max-height: 150px;       /* Limit the maximum height of the textarea */
+    overflow-y: auto;        /* Enable scrolling when content exceeds max-height */
+    width: 100%;             /* Ensure the textarea takes the full width of its container */
+}

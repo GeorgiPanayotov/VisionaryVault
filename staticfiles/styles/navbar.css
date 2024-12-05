@@ -1,0 +1,24 @@
+/* navbar.css */
+header .navbar {
+}
+
+.navbar-brand, .nav-link {
+    color: rgb(16, 69, 63) !important;
+    transition: color 0.3s ease, transform 0.3s ease;
+    padding: 10px 10px;
+    text-decoration-thickness: 112px;
+}
+
+.navbar-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Creates a responsive grid layout */
+    justify-content: end; /* Aligns items to the right */
+    gap: 5px; /* Space between buttons */
+}
+
+.nav-item {
+    margin: 0 15px;
+     position: relative;
+    /* Space between each nav item */
+}
+
