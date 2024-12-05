@@ -95,6 +95,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -173,7 +174,8 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/usr/local/var/www/static/'  # Path to collect static files during deployment
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Path to collect static files during deployment
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),  # Your project's local static files
 ]
@@ -189,7 +191,6 @@ LOGOUT_REDIRECT_URL = reverse_lazy('home')
 LOGIN_REDIRECT_URL = reverse_lazy('home')
 LOGIN_URL = 'login'
 
-# Email settings
 EMAIL_BACKEND = config('EMAIL_BACKEND')
 EMAIL_HOST = config('EMAIL_HOST')
 EMAIL_PORT = config('EMAIL_PORT')
