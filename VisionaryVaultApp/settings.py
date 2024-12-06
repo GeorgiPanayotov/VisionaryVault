@@ -56,8 +56,8 @@ CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default='False') == "True"
 
 SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default='False') == 'True'
 
-"""Ensure application is being served over HTTPS before setting to True"""
-SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default='False') == "True"
+# """Ensure application is being served over HTTPS before setting to True"""
+# SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default='False') == "True"
 
 """Set to 1 hour (3600 seconds) or 0 for testing,change to (31536000 seconds) for 1 year for production"""
 SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=0, cast=int)
