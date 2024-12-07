@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Comment, ArtPiece
+from .models import Comment, ArtPiece, Category
 
 
 @admin.register(Comment)
@@ -34,3 +34,9 @@ class ArtPieceAdmin(admin.ModelAdmin):
         queryset.delete()
 
     delete_art_pieces.short_description = "Delete selected art pieces"
+
+
+@admin.register(Category)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('category_name', 'category', 'description')  # Specify fields to display in the list view
+    search_fields = ('category_name',)
