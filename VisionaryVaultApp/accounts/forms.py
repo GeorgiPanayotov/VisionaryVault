@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, Pass
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from VisionaryVaultApp.accounts.models import Profile
+from VisionaryVaultApp.accounts.models import Profile, CustomUser
 from VisionaryVaultApp.accounts.validators import NameValidator  # Ensure this validator is defined
 
 User = get_user_model()
@@ -65,18 +65,13 @@ class UserRegistrationForm(UserCreationForm):
 
 class AdminUserChangeForm(UserChangeForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Make the 'is_staff' field editable
-        self.fields['is_staff'].widget.attrs['class'] = 'my-class'
 
 
 class AdminUserCreationForm(UserCreationForm):
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'email', 'is_staff', 'is_superuser']
         labels = {
             'username': 'Username',
@@ -87,8 +82,12 @@ class AdminUserCreationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs['placeholder'] = 'Enter your username'
-        self.fields['email'].widget.attrs['placeholder'] = 'Enter your email address'
+
+        # Ensure that the fields are available before modifying them
+        if 'username' in self.fields:
+            self.fields['username'].widget.attrs['placeholder'] = 'Enter your username'
+        if 'email' in self.fields:
+            self.fields['email'].widget.attrs['placeholder'] = 'Enter your email address'
 
 
 # User update form for profile-related fields
