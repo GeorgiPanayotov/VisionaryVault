@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
-from .forms import UserChangeForm, UserCreationForm
+from .forms import UserRegistrationForm, UserUpdateForm
 
 
 UserModel = get_user_model()
@@ -9,8 +9,8 @@ UserModel = get_user_model()
 
 @admin.register(UserModel)
 class UserAdmin(BaseUserAdmin):
-    form = UserChangeForm
-    add_form = UserCreationForm
+    form = UserUpdateForm
+    add_form = UserRegistrationForm
 
     list_display = ('username', 'email', 'get_first_name', 'get_last_name', 'is_active', 'is_staff')
     list_filter = ('is_active', 'is_staff', 'email')
