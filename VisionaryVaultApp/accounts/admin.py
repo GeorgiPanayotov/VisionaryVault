@@ -42,18 +42,3 @@ class UserAdmin(BaseUserAdmin):
 
     get_first_name.short_description = 'First Name'
     get_last_name.short_description = 'Last Name'
-
-
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        'user', 'full_name', 'age', 'date_of_birth', 'profile_picture', 'phone_number', 'address'
-    )
-    search_fields = ('user__username', 'user__email', 'first_name', 'last_name')
-    readonly_fields = ('user',)
-
-    fieldsets = (
-        (None, {'fields': ('user', 'first_name', 'last_name', 'bio')}),
-        ('Contact Information', {'fields': ('phone_number', 'address')}),
-        ('Personal Information', {'fields': ('date_of_birth', 'profile_picture')}),
-    )
