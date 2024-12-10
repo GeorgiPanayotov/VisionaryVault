@@ -1,14 +1,8 @@
-from asgiref.sync import sync_to_async
-from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, redirect
-from django.urls import reverse
-from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404, redirect
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .forms import CommentForm, EditCommentForm
 from .models import Comment, ArtPiece, Like
 from .serializers import CommentSerializer
 

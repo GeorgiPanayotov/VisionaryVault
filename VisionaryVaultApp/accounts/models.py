@@ -1,8 +1,6 @@
 from datetime import date
-
 from cloudinary.models import CloudinaryField
 from django.core.validators import RegexValidator
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 from VisionaryVaultApp.accounts.managers import AppUserManager
 from django.conf import settings
