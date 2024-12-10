@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -156,3 +156,4 @@ class CustomPasswordResetForm(PasswordResetForm):
         # Customizing the email sending process here if needed
         super().send_mail(subject_template_name, email_template_name, context, from_email, to_email,
                           html_email_template_name)
+

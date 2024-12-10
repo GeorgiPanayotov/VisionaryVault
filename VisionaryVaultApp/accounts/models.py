@@ -11,8 +11,15 @@ from VisionaryVaultApp.accounts.validators import NameValidator
 
 
 class CustomUser(AbstractUser):
-    email = models.EmailField(unique=True)
-    username = models.CharField(unique=True)
+    email = models.EmailField(
+        unique=True
+    )
+
+    username = models.CharField(
+        max_length=150,
+        unique=True
+    )
+
     objects = AppUserManager()
 
     def __str__(self):
