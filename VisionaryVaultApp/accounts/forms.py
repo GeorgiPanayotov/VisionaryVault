@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model, authenticate
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm, PasswordResetForm, UserChangeForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
@@ -61,6 +61,12 @@ class UserRegistrationForm(UserCreationForm):
         # Optionally, remove default error messages and replace them with your own
         self.fields['password1'].error_messages = {'required': 'Try complex password with at least 8 symbols, do not use only digits'}
         self.fields['password2'].error_messages = {'required': 'Enter the same password as above, for verification.'}
+
+
+class AdminUserChangeForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff']
 
 
 # User update form for profile-related fields

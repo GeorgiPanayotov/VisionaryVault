@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import get_user_model
-from .forms import UserRegistrationForm, UserChangeForm
+from .forms import UserCreationForm, AdminUserChangeForm
 from .models import Profile
 
 UserModel = get_user_model()
@@ -9,8 +9,8 @@ UserModel = get_user_model()
 
 @admin.register(UserModel)
 class UserAdmin(BaseUserAdmin):
-    form = UserChangeForm
-    add_form = UserRegistrationForm
+    form = AdminUserChangeForm
+    add_form = UserCreationForm
 
     list_display = ('username', 'email', 'get_first_name', 'get_last_name', 'is_active', 'is_staff', 'date_joined')
     list_filter = ('is_active', 'is_staff', 'email')
@@ -42,3 +42,18 @@ class UserAdmin(BaseUserAdmin):
 
     get_first_name.short_description = 'First Name'
     get_last_name.short_description = 'Last Name'
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = (
+        'user', 'full_name', 'age', 'date_of_birth', 'profile_picture', 'phone_number', 'address'
+    )
+    search_fields = ('user__username', 'user__email', 'first_name', 'last_name')
+    readonly_fields = ('user',)
+
+    fieldsets = (
+        (None, {'fields': ('user', 'first_name', 'last_name', 'bio')}),
+        ('Contact Information', {'fields': ('phone_number', 'address')}),
+        ('Personal Information', {'fields': ('date_of_birth', 'profile_picture')}),
+    )
