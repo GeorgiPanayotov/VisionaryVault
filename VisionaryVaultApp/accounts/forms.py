@@ -68,6 +68,28 @@ class AdminUserChangeForm(UserChangeForm):
         model = User
         fields = ['username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff']
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make the 'is_staff' field editable
+        self.fields['is_staff'].widget.attrs['class'] = 'my-class'
+
+
+class AdminUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'is_staff', 'is_superuser']
+        labels = {
+            'username': 'Username',
+            'email': 'Email',
+            'is_staff': 'Staff Status',
+            'is_superuser': 'Superuser Status',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['placeholder'] = 'Enter your username'
+        self.fields['email'].widget.attrs['placeholder'] = 'Enter your email address'
+
 
 # User update form for profile-related fields
 class UserUpdateForm(forms.ModelForm):
