@@ -2,7 +2,7 @@
 
 # 1. Visionary Vault App
 
-This is a platform for art lovers to upload, explore, and engage with through art. 
+This is a platform for art lovers to upload, explore, and engage through art. 
 * Link to the deployed project: 
 
       https://visionaryvault-dmh7cpcuakfee0es.italynorth-01.azurewebsites.net/
@@ -81,7 +81,6 @@ This is a platform for art lovers to upload, explore, and engage with through ar
 
 **Running Tests**
 
-* _Create a Superuser_
 * _Tests are located in the tests package directories in Art & Accounts applications._
 
 
@@ -97,14 +96,14 @@ This is a platform for art lovers to upload, explore, and engage with through ar
 ![Screenshot of login and register](docs/img.png)
 
 
-#### **Navigation bar appears on top for:** 
+#### **Navigation bar appears on top:** 
 ![Screenshot of the navigation bar](docs/img_1.png)
 
 
 #### **Upload art: Share art pieces in various categories.**
 ![Screenshot of uploading art piece](docs/img_10.png)
 
-#### **Interact with art: Like or comment on art pieces, even buy one:**
+#### **Interact with the art: Like, comment, report and buy functionalities are available:**
 ![Screenshot of like, comment, buy and report functionalities](docs/img_11.png)
 
 #### **Report content: Report inappropriate art or users:**
