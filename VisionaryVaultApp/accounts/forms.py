@@ -148,25 +148,13 @@ class CustomLoginForm(forms.Form):
 
         # Attempt to authenticate user
         user = authenticate(username=username_or_email, password=password)
-
         if user is None:
-            # Check if the username_or_email corresponds to an inactive user
+            # If no user was found, check if the username_or_email is an email
             try:
                 user_by_email = User.objects.get(email=username_or_email)
-                if not user_by_email.is_active:
-                    raise forms.ValidationError("Your account is inactive. Please contact support.")
-                # If the user is active but authentication fails, it's a password issue
                 user = authenticate(username=user_by_email.username, password=password)
             except User.DoesNotExist:
                 user = None
-
-        if user is None:
-            try:
-                user_by_username = User.objects.get(username=username_or_email)
-                if not user_by_username.is_active:
-                    raise forms.ValidationError("Your account is inactive. Please contact support.")
-            except User.DoesNotExist:
-                pass
 
         if user is None:
             raise forms.ValidationError("Check Caps Lock. Passwords are case-sensitive.")
