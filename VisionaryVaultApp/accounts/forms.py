@@ -129,7 +129,7 @@ class CustomLoginForm(forms.Form):
 
     def __init__(self, *args, request=None, **kwargs):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
-        self.request = request  # Store the request object if needed
+        self.request = request
 
     def clean_username_or_email(self):
         username_or_email = self.cleaned_data.get('username_or_email')
@@ -142,7 +142,6 @@ class CustomLoginForm(forms.Form):
         username_or_email = self.cleaned_data.get('username_or_email')
         password = self.cleaned_data.get('password')
 
-        # Skip validation if username_or_email is not yet valid
         if not username_or_email:
             return password
 

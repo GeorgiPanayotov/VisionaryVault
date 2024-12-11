@@ -46,7 +46,10 @@ class Profile(models.Model):
         null=False,
     )
 
-    date_of_birth = models.DateField(blank=True, null=True)
+    date_of_birth = models.DateField(
+        blank=True,
+        null=True
+    )
 
     profile_picture = CloudinaryField(
         null=True,
@@ -54,7 +57,9 @@ class Profile(models.Model):
         verbose_name='Profile Picture',
     )
 
-    bio = models.TextField(blank=True)
+    bio = models.TextField(
+        blank=True
+    )
 
     phone_number = models.CharField(
         blank=True,
@@ -63,7 +68,9 @@ class Profile(models.Model):
         validators=[RegexValidator(r'^\+?\d+$', 'Enter a valid phone number.')]
     )
 
-    address = models.TextField(blank=True)
+    address = models.TextField(
+        blank=True
+    )
 
     class Meta:
         permissions = [

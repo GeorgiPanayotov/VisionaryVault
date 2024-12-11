@@ -24,7 +24,7 @@ class FileSizeValidator(object):
             self.__message = value
 
     def __call__(self, value):
-        # Ensure we are dealing with a Cloudinary resource
+
         if hasattr(value, 'public_id'):
             # Use Cloudinary's API to get image resource details
             image_metadata = resources(public_ids=[value.public_id])

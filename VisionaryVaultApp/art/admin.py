@@ -5,7 +5,7 @@ from .models import Comment, ArtPiece, Category
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('content', 'status', 'user', 'art_piece', 'timestamp')
-    list_filter = ('status',)  # Filter by the reported status
+    list_filter = ('status',)
     actions = ['mark_as_unreported']
 
     def mark_as_unreported(self, request, queryset):
@@ -22,7 +22,7 @@ class CommentAdmin(admin.ModelAdmin):
 @admin.register(ArtPiece)
 class ArtPieceAdmin(admin.ModelAdmin):
     list_display = ('description', 'status', 'likes_count', 'timestamp')
-    list_filter = ('status',)  # Filter by the reported status
+    list_filter = ('status',)
     actions = ['mark_as_unreported']
 
     def mark_as_unreported(self, request, queryset):
@@ -38,5 +38,5 @@ class ArtPieceAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('category_name', 'category', 'description')  # Specify fields to display in the list view
+    list_display = ('category_name', 'category', 'description')
     search_fields = ('category_name',)

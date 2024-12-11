@@ -38,6 +38,7 @@ class EditCommentForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
+
         if not content:
             raise forms.ValidationError('Comment cannot be empty')
         return content

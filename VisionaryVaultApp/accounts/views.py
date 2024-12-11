@@ -10,6 +10,7 @@ from .forms import UserRegistrationForm, UserUpdateForm, CustomLoginForm, EmailC
     CustomPasswordResetForm
 from .models import Profile
 
+
 User = get_user_model()
 
 
@@ -144,15 +145,14 @@ class CustomChangePasswordView(PasswordChangeView):
     success_url = reverse_lazy('password_change_done')
 
     def form_valid(self, form):
-        # You can add extra behavior here, e.g., logging or notifications
         return super().form_valid(form)
 
 
 class EmailChangeView(UpdateView):
-    model = User  # Ensure this references your custom user model
+    model = User
     form_class = EmailChangeForm
-    template_name = 'accounts/change_email.html'  # Ensure this path is correct
-    success_url = reverse_lazy('email_change_done')  # Redirect after successful email change
+    template_name = 'accounts/change_email.html'
+    success_url = reverse_lazy('email_change_done')
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -170,7 +170,7 @@ class EmailChangeDoneView(TemplateView):
 class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
     template_name = 'accounts/password_change/password_reset_form.html'
-    success_url = '/accounts/password_reset/done/'  # Change as needed
+    success_url = '/accounts/password_reset/done/'
 
     def form_valid(self, form):
         # Call the parent form_valid method
@@ -180,7 +180,6 @@ class CustomPasswordResetView(PasswordResetView):
         return response
 
     def form_invalid(self, form):
-        # Optionally process form errors here
         return super().form_invalid(form)
 
 

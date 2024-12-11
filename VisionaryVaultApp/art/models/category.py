@@ -11,7 +11,9 @@ class Category(models.Model):
         verbose_name='Art Category'
     )
 
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        blank=True
+    )
 
     def __str__(self):
         return self.category_name
