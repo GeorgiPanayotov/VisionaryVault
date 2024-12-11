@@ -48,7 +48,7 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
 
 
 def reinstate_art_piece(request, art_piece_id):
-    if not request.user.has_perm('VisionaryVaultApp.accounts.can_manage_artworks'):
+    if not request.user.has_perm('accounts.can_manage_artworks'):
         return JsonResponse({"error": "You do not have permission to manage artworks."}, status=403)
 
     # Get the art piece

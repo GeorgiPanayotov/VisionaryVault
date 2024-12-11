@@ -26,7 +26,7 @@
                     {% if art_piece.status == 'reported' %}
                         {% if user.is_staff %}
                             <p class="text-warning">This art piece has been reported.</p>
-                            {% if user|has_permission:'VisionaryVaultApp.accounts.can_manage_artworks'%}
+                            {% if user|has_permission:'accounts.can_manage_artworks'%}
                            <form method="POST" action="{% url 'admin_unreport' art_piece.id %}">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-warning">Reinstate to Active</button>

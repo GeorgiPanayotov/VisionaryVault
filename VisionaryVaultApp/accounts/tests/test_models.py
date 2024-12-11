@@ -4,7 +4,6 @@ from django.utils import timezone
 
 """Creating test user for the CustomUser model."""
 
-
 class CustomUserTests(TestCase):
     def setUp(self):
         self.user = CustomUser.objects.create_user(
