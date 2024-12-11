@@ -23,6 +23,7 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
+
         form.instance.user = self.request.user
         art_piece_id = self.kwargs.get('art_piece_id')
         form.instance.art_piece_id = art_piece_id  # Set the selected art piece
@@ -47,9 +48,8 @@ class ReportCreateView(LoginRequiredMixin, CreateView):
 
 
 def reinstate_art_piece(request, art_piece_id):
-    # Ensure the user is an admin before proceeding
-    if not request.user.is_staff:
-        return redirect('art_gallery_list')  # Or another appropriate page
+    if not request.user.has_perm('VisionaryVaultApp.accounts.can_manage_artworks'):
+        return JsonResponse({"error": "You do not have permission to manage artworks."}, status=403)
 
     # Get the art piece
     art_piece = get_object_or_404(ArtPiece, id=art_piece_id)
