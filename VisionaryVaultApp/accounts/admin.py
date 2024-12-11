@@ -17,7 +17,7 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = ('groups', 'user_permissions')
     search_fields = ('username', 'email', 'profile__first_name', 'profile__last_name')
     ordering = ('-date_joined',)
-    readonly_fields = ('username', 'email', 'is_active', 'is_staff')
+    readonly_fields = ('is_active', 'date_joined')
 
     fieldsets = (
         (None, {'fields': ('username', 'email', 'password')}),
