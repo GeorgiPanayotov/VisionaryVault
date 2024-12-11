@@ -8,8 +8,8 @@ def has_permission(user, perm):
     return user.has_perm(perm)
 
 
-@register.simple_tag
-def is_user_banned_or_inactive(user):
+@register.filter
+def is_user_banned(user):
     """
     Returns True if the user is banned (in 'Banned Users' group) or inactive.
     """

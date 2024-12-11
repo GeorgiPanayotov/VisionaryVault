@@ -1,5 +1,5 @@
 from django import forms
-from .models import ArtPiece, Category, Comment
+from .models import ArtPiece, Comment
 
 
 class ArtPieceForm(forms.ModelForm):

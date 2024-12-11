@@ -4,24 +4,21 @@ from django.db import transaction
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 from VisionaryVaultApp.art.models import ArtPiece
 from VisionaryVaultApp.common.models import Basket, BasketItem
 
 
 class HomePageView(TemplateView):
-    template_name = 'common/home.html'  # Specify the template to render
+    template_name = 'common/home.html'
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
+
         context = super().get_context_data(**kwargs)
 
-        # Check if the user is authenticated
         if self.request.user.is_authenticated:
-            context['profile'] = self.request.user  # You can pass the user or profile data
+            context['profile'] = self.request.user
         else:
-            context['profile'] = None  # No profile data for unauthenticated users
+            context['profile'] = None
 
         return context
 

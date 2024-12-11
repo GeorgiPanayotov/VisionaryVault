@@ -1,5 +1,4 @@
 from django.db import models
-
 from VisionaryVaultApp.art.models import ArtPiece
 from VisionaryVaultApp.art.models import UserRelatedModel
 

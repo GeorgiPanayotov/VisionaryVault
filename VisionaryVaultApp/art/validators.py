@@ -2,7 +2,6 @@ from cloudinary.api import resources
 from django.core.exceptions import ValidationError
 from django.utils.deconstruct import deconstructible
 from cloudinary.models import CloudinaryResource
-from django.core.exceptions import ValidationError
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 

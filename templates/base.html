@@ -78,8 +78,7 @@
 </nav>
 </header>
 
-{% is_user_banned_or_inactive user as user_banned_or_inactive  %}
-{% if user_banned_or_inactive %}
+{% if user|is_user_banned %}
     <div class="alert alert-danger text-center" style="position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;">
         Your account is blocked. Please contact support for assistance at visionaryvault@gmail.com.
     </div>

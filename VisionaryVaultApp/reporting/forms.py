@@ -1,6 +1,6 @@
 from django import forms
 from .models import Report
-from ..art.models import ArtPiece, Comment
+from ..art.models import Comment
 
 
 class ReportForm(forms.ModelForm):

@@ -1,6 +1,4 @@
 from rest_framework import serializers
-
-from .models.art_piece import ArtPiece
 from .models.comment import Comment
 from .models.like import Like
 
