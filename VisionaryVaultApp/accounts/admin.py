@@ -30,7 +30,7 @@ class UserAdmin(BaseUserAdmin):
             'classes': ('wide',),
             'fields': (
                 'username', 'email', 'password1', 'password2', 'is_staff', 'is_superuser', 'groups',
-                'user_permissions'),
+                'user_permissions', 'is_active'),
         }),
     )
 
