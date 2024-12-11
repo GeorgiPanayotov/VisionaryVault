@@ -19,7 +19,15 @@ class CustomUserTests(TestCase):
         self.assertEqual(self.user.email, 'test@example.com')
 
 
-class UserProfileSignalTests(TestCase):
+"""The UserProfileSignalIntegrationTests focuses on interaction between CustomUser and Profile:
+User Creation,
+Profile Existence, 
+Profile Instance Check,
+Field Validations, 
+"""
+
+
+class UserProfileSignalIntegrationTests(TestCase):
     """Testing if a profile is created after a new user is created."""
     def test_profile_created_on_user_creation(self):
         user = CustomUser.objects.create_user(
@@ -40,3 +48,5 @@ class UserProfileSignalTests(TestCase):
 
         # Optionally, check other default values if necessary
         self.assertEqual(user.profile.date_of_birth, None)
+
+
