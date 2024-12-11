@@ -61,6 +61,11 @@ class CustomLoginView(LoginView):
                 pass
 
         if user is not None:
+
+            if user.groups.filter(name='Banned users').exists() and not user.is_active:
+                messages.error(self.request, "Your account has been banned or is inactive. Please contact support.")
+                return self.form_invalid(form)
+
             login(self.request, user)
             messages.success(self.request, "Login is successful!")
             return redirect('home')
