@@ -3,7 +3,7 @@
 # 1. Visionary Vault App
 
 This is a platform for art lovers to upload, explore, and engage through art. 
-* Link to the deployed project: 
+* Link to the project - *currently not deployed:
 
       https://visionaryvault-dmh7cpcuakfee0es.italynorth-01.azurewebsites.net/
 
